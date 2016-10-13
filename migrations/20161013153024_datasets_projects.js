@@ -8,7 +8,7 @@ exports.up = (knex) => {
       .references('id')
       .inTable('datasets')
       .onDelete('CASCADE');
-    table.integet('project_id')
+    table.integer('project_id')
       .notNullable()
       .references('id')
       .inTable('projects')

@@ -4,7 +4,7 @@ exports.up = function(knex) {
     table.increments();
     table.string('email').notNullable().unique();
     table.specificType('hashed_password', 'char(60)')
-         .notNullabe();
+         .notNullable();
     table.timestamps(true, true);
   });
 };
