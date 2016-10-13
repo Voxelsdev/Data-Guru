@@ -1,0 +1,45 @@
+{
+  "name": "q2project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "knex": "knex",
+    "start": "nodemon server.js",
+    "heroku-postbuild": "knex migrate:latest",
+    "nf": "nf start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Voxelsdev/Data-Find.git"
+  },
+  "keywords": [],
+  "author": "Tyler Miller <tylermillerhome@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Voxelsdev/Data-Find/issues"
+  },
+  "homepage": "https://github.com/Voxelsdev/Data-Find#readme",
+  "dependencies": {
+    "bcrypt-as-promised": "^1.1.0",
+    "body-parser": "^1.15.2",
+    "boom": "^4.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-validation": "^1.0.1",
+    "humps": "^1.1.0",
+    "joi": "^9.1.1",
+    "jsonwebtoken": "^7.1.9",
+    "knex": "^0.12.5",
+    "morgan": "^1.7.0",
+    "pg": "^6.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "foreman": "^2.0.0",
+    "nodemon": "^1.11.0"
+  },
+  "engines": {
+    "node": "v6.6.0"
+  }
+}
