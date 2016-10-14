@@ -14,17 +14,21 @@ router.post('/users', ev(validations.post), (req, res, next) => {
   const { email, password } = req.body;
 
   knex('users')
-  .where('email', email)
-  .then((user) => {
-    if (user.length) {
-      return next(boom.create(400, 'Email already exists'));
-    }
+    .select(knex.raw('1=1'))
+    .where('email', email)
+    .first()
+    .then((exists) => {
+      if (exists) {
+        throw boom.create(400, 'Email already exists');
+      }
 
-    bcrypt.hash(password, 13)
+      return bcrypt.hash(password, 12);
+    })
     .then((hashedPassword) => {
       const insertUser = { email, hashedPassword };
 
-      return knex('users').insert(decamelizeKeys(insertUser), '*');
+      return knex('users')
+             .insert(decamelizeKeys(insertUser), '*');
     })
     .then((rows) => {
       const user = camelizeKeys(rows[0]);
@@ -34,10 +38,8 @@ router.post('/users', ev(validations.post), (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-
+      next(err);
     });
-  })
-  .catch((err) => {
-    next(err);
-  });
 });
+
+module.exports = router;

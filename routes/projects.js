@@ -8,3 +8,7 @@ const boom = require('boom');
 const ev = require('express-validation');
 const validations = require('../validations/projects');
 const { camelizeKeys, decamelizeKeys } = require('humps');
+
+router.post('/projects', ev(validations.post), (req, res, next) => {
+  
+});
