@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
+const users = require('./routes/users');
+const projects = require('./routes/projects');
 const port = process.env.PORT || 8000;
 
 app.disable('x-powered-by');
@@ -27,6 +29,8 @@ switch (app.get('env')) {
   default:
 }
 
+app.use(users);
+app.use(projects);
 app.use(bodyParser.json());
 app.use(cookieParser());
 
