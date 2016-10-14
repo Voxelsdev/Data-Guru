@@ -1,0 +1,41 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.navbar-fixed {
+  background-color: transparent;
+  position: absolute;
+  margin-top: 0;
+}
+
+#welcome {
+  margin-top: 5%;
+  position: absolute;
+  width: 100%;
+}
+
+nav {
+  background-color: transparent;
+  margin-top: 2.5%;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+}
+
+.navbar-wrapper {
+  box-shadow: 0px;
+}
+
+nav div ul li a {
+  color: white;
+}
+
+footer {
+  margin-bottom: 0;
+}
