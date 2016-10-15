@@ -59,21 +59,38 @@ router.get('/projects/:id', authorize, (req, res, next) => {
   }
 });
 
-// posts a new project for the user, needs work
+// posts a new project for the user
 router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
-  const { projectId } = req.body;
+  const { project } = req.body;
   const { userId } = req.token;
 
   if (userId) {
     knex('projects')
-    .where('id', projectId)
-    .first()
-    .then((row) => {
-      if (!row) {
-        throw boom.create(404, 'Project not found');
-      }
-
-      // return knex('projects').insert(decamelizeKeys({ userId,  }))
+    .insert(decamelizeKeys(project), '*')
+    .then(() => {
+      res.send({status: 'Updated'});
     })
+    .catch((err) => {
+      next(err);
+    });
+  }
+});
+
+router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req, res, next) => {
+  const { dataset } = req.body;
+  const { userId } = req.token;
+
+  if (userId) {
+    knex('projects')
+    .select('datasets.datasets_name', 'datasets.domain', 'datasets.dataset_link', 'datasets.dataset_description')
+    .innerJoin('datasets_projects', 'datasets_projects.project_id', 'project.id')
+    .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
+    .where('datasets.id', dataset.id)
+    .then((rows) => {
+      
+    })
+    .catch((err) => {
+      next(err);
+    });
   }
 });
