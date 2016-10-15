@@ -9,6 +9,26 @@ const ev = require('express-validation');
 const validations = require('../validations/projects');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
-router.post('/projects', ev(validations.post), (req, res, next) => {
-  
+function authorize (req, res, next) {
+  jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return next(boom.create(401, 'Unauthorized'));
+    }
+
+    req.token = decoded;
+
+    next();
+  });
+}
+
+router.post('/projects', authroize, ev(validations.post), (req, res, next) => {
+
+});
+
+router.get('/projects', authorize, (req, res, next) => {
+
+});
+
+router.get('/projects/:id', authorize, (req, res, next) => {
+
 });
