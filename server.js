@@ -29,10 +29,10 @@ switch (app.get('env')) {
   default:
 }
 
-app.use(users);
-app.use(projects);
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(users);
+app.use(projects);
 
 app.use((_req, res) => {
   res.sendStatus(404);

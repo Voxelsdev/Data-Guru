@@ -1,3 +1,3 @@
-$(document).ready(() => {
+(() => {
   $('.parallax').parallax();
-});
+})();

@@ -87,7 +87,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
     .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
     .where('datasets.id', dataset.id)
     .then((rows) => {
-      
+
     })
     .catch((err) => {
       next(err);
