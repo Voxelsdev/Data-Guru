@@ -77,20 +77,7 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
 });
 
 router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req, res, next) => {
-  const { dataset } = req.body;
+  const { datasetName, datasetKey, domain, datasetLink, datasetDescription } = req.body;
   const { userId } = req.token;
-
-  if (userId) {
-    knex('projects')
-    .select('datasets.datasets_name', 'datasets.domain', 'datasets.dataset_link', 'datasets.dataset_description')
-    .innerJoin('datasets_projects', 'datasets_projects.project_id', 'project.id')
-    .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
-    .where('datasets.id', dataset.id)
-    .then((rows) => {
-
-    })
-    .catch((err) => {
-      next(err);
-    });
-  }
+  
 });
