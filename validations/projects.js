@@ -25,6 +25,14 @@ module.exports.patch = {
     description: joi.string()
       .label('Description')
       .max(500)
+  },
+  
+  params: {
+    id: Joi.number()
+      .integer()
+      .required()
+      .min(0)
+      .label('Id');
   }
 };
 
@@ -35,5 +43,23 @@ module.exports.delete = {
       .required()
       .min(0)
       .label('Id');
+  }
+};
+
+module.exports.deleteWithQuery = {
+  params: {
+    id: Joi.number()
+      .integer()
+      .required()
+      .min(0)
+      .label('Project Id');
+  },
+
+  query: {
+    id: Joi.number()
+      .integer()
+      .required()
+      .min(0)
+      .label('Dataset Id');
   }
 };

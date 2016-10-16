@@ -63,7 +63,7 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
   knex('projects')
   .insert(decamelizeKeys(project), '*')
   .then((row) => {
-    res.send(camelizeKeys(row));
+    res.send(camelizeKeys(row[0]));
   })
   .catch((err) => {
     next(err);
@@ -84,7 +84,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
 
       knex('datasets').insert(decamelizeKeys(datasetInfo), '*')
         .then((row) => {
-          const datasetRow = camelizeKeys(row);
+          const datasetRow = camelizeKeys(row[0]);
           const datasetProject = { projectId, datasetId: datasetRow.id };
 
           return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
@@ -96,7 +96,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
           next(err);
         })
     } else {
-      const datasetRow = camelizeKeys(row);
+      const datasetRow = camelizeKeys(row[0]);
       const datasetProject = { projectId, datasetId: datasetRow.id };
 
       knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
@@ -111,6 +111,32 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
   .catch((err) => {
     next(err);
   });
+});
+
+router.patch('/projects/:id', authorize, ev(validations.patch), (req, res, next) => {
+  knex('projects')
+    .where('id', req.params.id)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found')
+      }
+
+      const { name, description } = req.body;
+      const updateProject = { name, description };
+
+      return knex('projects')
+        .where('id', req.params.id)
+        .update(decamelizeKeys(updateProject), '*');
+    })
+    .then((row) => {
+      const project = camelizeKeys(row[0]);
+
+      res.send(project);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, next) => {
@@ -142,7 +168,32 @@ router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, nex
     });
 });
 
-router.delete('/projects/:id/data', authorize, ev(validatins.delete), (req, res, next) => {
+router.delete('/projects/:id/data', authorize, ev(validatins.deleteWithQuery), (req, res, next) => {
   const { userId } = req.token;
+  let dataset_project;
 
+  knex('datasets_projects')
+    .where('project_id', req.params.id)
+    .where('dataset_id', req.query.id)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found')
+      }
+
+      dataset_project = camelizeKeys(row);
+
+      return knex('datasets_projects')
+        .where('project_id', req.params.id)
+        .where('dataset_id', req.query.id)
+        .del();
+    })
+    .then(() => {
+      delete dataset_project.id;
+
+      res.send(dataset_project);
+    })
+    .catch((err) => {
+      next(err);
+    })
 });
