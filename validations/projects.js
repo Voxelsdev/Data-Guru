@@ -27,3 +27,13 @@ module.exports.patch = {
       .max(500)
   }
 };
+
+module.exports.delete = {
+  params: {
+    id: Joi.number()
+      .integer()
+      .required()
+      .min(0)
+      .label('Id');
+  }
+};

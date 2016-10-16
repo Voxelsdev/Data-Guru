@@ -112,3 +112,37 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
     next(err);
   });
 });
+
+router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, next) => {
+  const { userId } = req.token;
+  let project;
+
+  knex('projects')
+    .where('id', req.params.id)
+    .where('user_id', userId)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found');
+      }
+
+      project = camelizeKeys(row);
+
+      return knex('projects')
+        .where('id', req.params.id)
+        .del();
+    })
+    .then(() => {
+      delete project.id;
+
+      res.send(project);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.delete('/projects/:id/data', authorize, ev(validatins.delete), (req, res, next) => {
+  const { userId } = req.token;
+
+});
