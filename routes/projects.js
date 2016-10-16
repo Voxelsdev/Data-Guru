@@ -195,5 +195,5 @@ router.delete('/projects/:id/data', authorize, ev(validatins.deleteWithQuery), (
     })
     .catch((err) => {
       next(err);
-    })
+    });
 });
