@@ -25,38 +25,34 @@ function authorize (req, res, next) {
 router.get('/projects', authorize, (req, res, next) => {
   const userId = req.token;
 
-  if (userId) {
-    knex('projects')
-    .where('projects.user_id', userId)
-    .orderBy('projects.updated_at', 'DESC')
-    .then((rows) => {
-      res.send(camelizeKeys(rows))
-    })
-    .catch((err) => {
-      next(err);
-    });
-  }
+  knex('projects')
+  .where('projects.user_id', userId)
+  .orderBy('projects.updated_at', 'DESC')
+  .then((rows) => {
+    res.send(camelizeKeys(rows))
+  })
+  .catch((err) => {
+    next(err);
+  });
 });
 
 // gets a specific user's project returns information of datasets
 router.get('/projects/:id', authorize, (req, res, next) => {
   const userId = req.token;
+  const projectId = req.params.id;
 
-  if (userId) {
-    const projectId = req.params.id;
-    knex('projects')
-    .select()
-    .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
-    .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
-    .then((rows) => {
-      const project = camelizeKeys(rows);
+  knex('projects')
+  .select()
+  .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
+  .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
+  .then((rows) => {
+    const project = camelizeKeys(rows);
 
-      res.send(project); // sends user's project and all the dataset info with it
-    })
-    .catch((err) => {
-      next(err);
-    });
-  }
+    res.send(project); // sends user's project and all the dataset info with it
+  })
+  .catch((err) => {
+    next(err);
+  });
 });
 
 // posts a new project for the user
@@ -64,20 +60,55 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
   const { project } = req.body;
   const { userId } = req.token;
 
-  if (userId) {
-    knex('projects')
-    .insert(decamelizeKeys(project), '*')
-    .then(() => {
-      res.send({status: 'Updated'});
-    })
-    .catch((err) => {
-      next(err);
-    });
-  }
+  knex('projects')
+  .insert(decamelizeKeys(project), '*')
+  .then((row) => {
+    res.send(camelizeKeys(row));
+  })
+  .catch((err) => {
+    next(err);
+  });
 });
 
 router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req, res, next) => {
   const { datasetName, datasetKey, domain, datasetLink, datasetDescription } = req.body;
   const { userId } = req.token;
-  
+  const projectId = req.params.id;
+
+  knex('datasets')
+  .where('dataset_key', datasetKey)
+  .first()
+  .then((row) => {
+    if (!row) {
+      const datasetInfo = { datasetName, datasetKey, domain, datasetLink, datasetDescription };
+
+      knex('datasets').insert(decamelizeKeys(datasetInfo), '*')
+        .then((row) => {
+          const datasetRow = camelizeKeys(row);
+          const datasetProject = { projectId, datasetId: datasetRow.id };
+
+          return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
+        })
+        .then((row) => {
+          res.send(camelizeKeys(row));
+        })
+        .catch((err) => {
+          next(err);
+        })
+    } else {
+      const datasetRow = camelizeKeys(row);
+      const datasetProject = { projectId, datasetId: datasetRow.id };
+
+      knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
+        .then((row) => {
+          res.send(camelizeKeys(row));
+        })
+        .catch((err) => {
+          next(err);
+        });
+    }
+  })
+  .catch((err) => {
+    next(err);
+  });
 });
