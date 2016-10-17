@@ -1,12 +1,21 @@
 (() => {
   'use strict';
 
+  $.get('http://quotes.rest/qod.json', (response) => {
+    $('#author').text('-    ' + response.contents.quotes[0].author);
+    $('#quote').text(response.contents.quotes[0].quote);
+  });
+
   $('.submit').on('click', () => {
     const email = $('#account_circle').val();
     const password = $('#verified_user').val();
 
     if (!email) {
       return Materialize.toast('Email must not be blank', 2000);
+    }
+
+    if (email.indexOf('@') < 0) {
+      return Materialize.toast('Email must be valid', 3000);
     }
 
     if (!password) {
