@@ -13,6 +13,7 @@ const path = require('path');
 const users = require('./routes/users');
 const projects = require('./routes/projects');
 const token = require('./routes/token');
+const datasets = require('./routes/datasets');
 const port = process.env.PORT || 8000;
 
 app.disable('x-powered-by');
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use(users);
 app.use(projects);
 app.use(token);
+app.use(datasets);
 
 app.use((_req, res) => {
   res.sendStatus(404);

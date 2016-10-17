@@ -3,10 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
-const bcrypt = require('bcrypt-as-promised');
 const boom = require('boom');
 const ev = require('express-validation');
 const validations = require('../validations/projects');
+const dataValidation = require('../validations/datasets');
 const jwt = require('jsonwebtoken');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
@@ -74,7 +74,7 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
   });
 });
 
-router.post('/projects/:id/datasets/add', authorize, (req, res, next) => {
+router.post('/projects/:id/datasets/add', authorize, ev(dataValidation.post), (req, res, next) => {
   const { datasetName, datasetKey, domain, datasetLink, datasetDescription } = req.body;
   const { userId } = req.token;
   const projectId = req.params.id;

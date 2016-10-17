@@ -6,7 +6,7 @@ module.exports.post = {
   body: {
     datasetName: joi.string()
       .required()
-      .max(30)
+      .max(50)
       .label('Dataset Name'),
 
     domain: joi.string()
@@ -18,7 +18,6 @@ module.exports.post = {
       .label('Dataset URL'),
 
     datasetDescription: joi.string()
-      .required()
       .max(100)
       .label('Dataset Description')
   }
