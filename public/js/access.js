@@ -17,12 +17,18 @@
       return Materialize.toast('Password must be at least 8 characers', 2000);
     }
 
+    if (localStorage.access === 'login') {
+      var url = '/token';
+    } else if (localStorage.access === 'signup') {
+      var url = '/users';
+    }
+
     const options = {
       contentType: 'application/json',
       data: JSON.stringify({ email, password }),
       dataType: 'json',
       type: 'POST',
-      url: '/token'
+      url: url
     };
 
     $.ajax(options)
