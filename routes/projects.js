@@ -84,37 +84,34 @@ router.post('/projects/:id/datasets/add', authorize, ev(dataValidation.post), (r
   .first()
   .then((row) => {
     if (!row) {
-      const datasetInfo = { datasetName, datasetKey, domain, datasetLink, datasetDescription };
+      return knex.transaction((trx) => {
+        const datasetInfo = { datasetName, datasetKey, domain, datasetLink, datasetDescription };
 
-      return knex('datasets').insert(decamelizeKeys(datasetInfo), '*')
-        .then((row) => {
-          const datasetRow = camelizeKeys(row[0]);
-          const datasetProject = { projectId, datasetId: datasetRow.id };
+        return knex('datasets').insert(decamelizeKeys(datasetInfo), '*').transacting(trx)
+          .then((row) => {
+            const datasetRow = camelizeKeys(row[0]);
+            const datasetProject = { projectId, datasetId: datasetRow.id };
 
-          return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
-        })
-        .then((row) => {
-          res.send(camelizeKeys(row));
-        })
-        .catch((err) => {
-          next(err);
-        });
+            return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*').transacting(trx);
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      });
     } else {
       const datasetRow = camelizeKeys(row);
       const datasetProject = { projectId, datasetId: datasetRow.id };
 
-      return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
-        .then((row) => {
-          res.send(camelizeKeys(row));
-        })
-        .catch((err) => {
-          next(err);
-        });
+      return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*');
     }
+  })
+  .then((row) => {
+    res.send(camelizeKeys(row));
   })
   .catch((err) => {
     next(err);
   });
+
+
 });
 
 router.patch('/projects/:id', authorize, ev(validations.patch), (req, res, next) => {
