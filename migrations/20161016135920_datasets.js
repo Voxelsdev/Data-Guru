@@ -1,7 +1,11 @@
 'use strict';
 exports.up = function(knex) {
   return knex.schema.table('datasets', (table) => {
-    table.string('dataset_key', 9).notNullable().defaultTo('').index();
+    table.string('dataset_key', 9)
+      .notNullable()
+      .defaultTo('')
+      .unique()
+      .index();
   });
 };
 

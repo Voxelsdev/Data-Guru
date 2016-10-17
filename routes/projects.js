@@ -82,7 +82,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
     if (!row) {
       const datasetInfo = { datasetName, datasetKey, domain, datasetLink, datasetDescription };
 
-      knex('datasets').insert(decamelizeKeys(datasetInfo), '*')
+      return knex('datasets').insert(decamelizeKeys(datasetInfo), '*')
         .then((row) => {
           const datasetRow = camelizeKeys(row[0]);
           const datasetProject = { projectId, datasetId: datasetRow.id };
@@ -94,12 +94,12 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
         })
         .catch((err) => {
           next(err);
-        })
+        });
     } else {
       const datasetRow = camelizeKeys(row[0]);
       const datasetProject = { projectId, datasetId: datasetRow.id };
 
-      knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
+      return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
         .then((row) => {
           res.send(camelizeKeys(row));
         })
