@@ -1,0 +1,34 @@
+.login-inputs {
+  margin-top: 15px;
+}
+
+.input-field label {
+  color: #000;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #fff;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #00e524;
+  box-shadow: 0 1px 0 0 #009917;
+}
+
+.input-field .prefix.active {
+  color: #fff;
+}
+
+.submit {
+  color: black;
+}
+
+#about {
+  text-align: center;
+  color: #fff;
+}
+
+#login-body {
+  height: 1000px;
+}
