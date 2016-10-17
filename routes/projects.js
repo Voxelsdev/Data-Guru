@@ -1,12 +1,13 @@
 'use strict';
 
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 const knex = require('../knex');
 const bcrypt = require('bcrypt-as-promised');
 const boom = require('boom');
 const ev = require('express-validation');
 const validations = require('../validations/projects');
+const jwt = require('jsonwebtoken');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
 function authorize (req, res, next) {
@@ -23,13 +24,13 @@ function authorize (req, res, next) {
 
 // gets all of a users projects does not return datasets
 router.get('/projects', authorize, (req, res, next) => {
-  const userId = req.token;
+  const { userId } = req.token;
 
   knex('projects')
-  .where('projects.user_id', userId)
-  .orderBy('projects.updated_at', 'DESC')
+  .where('user_id', userId)
+  .orderBy('created_at', 'DESC')
   .then((rows) => {
-    res.send(camelizeKeys(rows))
+    res.send(camelizeKeys(rows));
   })
   .catch((err) => {
     next(err);
@@ -38,11 +39,12 @@ router.get('/projects', authorize, (req, res, next) => {
 
 // gets a specific user's project returns information of datasets
 router.get('/projects/:id', authorize, (req, res, next) => {
-  const userId = req.token;
+  const { userId } = req.token;
   const projectId = req.params.id;
 
   knex('projects')
   .select()
+  .where('user_id', userId)
   .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
   .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
   .then((rows) => {
@@ -57,8 +59,10 @@ router.get('/projects/:id', authorize, (req, res, next) => {
 
 // posts a new project for the user
 router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
-  const { project } = req.body;
+  const { name, description } = req.body;
   const { userId } = req.token;
+
+  const project = { userId, name, description };
 
   knex('projects')
   .insert(decamelizeKeys(project), '*')
@@ -70,7 +74,7 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
   });
 });
 
-router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req, res, next) => {
+router.post('/projects/:id/datasets/add', authorize, (req, res, next) => {
   const { datasetName, datasetKey, domain, datasetLink, datasetDescription } = req.body;
   const { userId } = req.token;
   const projectId = req.params.id;
@@ -96,7 +100,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
           next(err);
         });
     } else {
-      const datasetRow = camelizeKeys(row[0]);
+      const datasetRow = camelizeKeys(row);
       const datasetProject = { projectId, datasetId: datasetRow.id };
 
       return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*')
@@ -116,6 +120,7 @@ router.post('/projects/:id/datasets/add', authorize, ev(validations.post), (req,
 router.patch('/projects/:id', authorize, ev(validations.patch), (req, res, next) => {
   knex('projects')
     .where('id', req.params.id)
+    .where('user_id', req.token.userId)
     .first()
     .then((row) => {
       if (!row) {
@@ -168,13 +173,12 @@ router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, nex
     });
 });
 
-router.delete('/projects/:id/data', authorize, ev(validatins.deleteWithQuery), (req, res, next) => {
+router.delete('/projects/:id/data', authorize, ev(validations.deleteWithQuery), (req, res, next) => {
   const { userId } = req.token;
   let dataset_project;
 
   knex('datasets_projects')
-    .where('project_id', req.params.id)
-    .where('dataset_id', req.query.id)
+    .where('id', req.query.id)
     .first()
     .then((row) => {
       if (!row) {
@@ -184,8 +188,7 @@ router.delete('/projects/:id/data', authorize, ev(validatins.deleteWithQuery), (
       dataset_project = camelizeKeys(row);
 
       return knex('datasets_projects')
-        .where('project_id', req.params.id)
-        .where('dataset_id', req.query.id)
+        .where('id', req.query.id)
         .del();
     })
     .then(() => {
@@ -197,3 +200,5 @@ router.delete('/projects/:id/data', authorize, ev(validatins.deleteWithQuery), (
       next(err);
     });
 });
+
+module.exports = router;

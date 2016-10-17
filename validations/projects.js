@@ -26,40 +26,40 @@ module.exports.patch = {
       .label('Description')
       .max(500)
   },
-  
+
   params: {
-    id: Joi.number()
+    id: joi.number()
       .integer()
       .required()
       .min(0)
-      .label('Id');
+      .label('Id')
   }
 };
 
 module.exports.delete = {
   params: {
-    id: Joi.number()
+    id: joi.number()
       .integer()
       .required()
       .min(0)
-      .label('Id');
+      .label('Id')
   }
 };
 
 module.exports.deleteWithQuery = {
   params: {
-    id: Joi.number()
+    id: joi.number()
       .integer()
       .required()
       .min(0)
-      .label('Project Id');
+      .label('Project Id')
   },
 
   query: {
-    id: Joi.number()
+    id: joi.number()
       .integer()
       .required()
       .min(0)
-      .label('Dataset Id');
+      .label('Dataset Id')
   }
 };

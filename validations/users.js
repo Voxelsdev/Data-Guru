@@ -16,5 +16,5 @@ module.exports.post = {
       .min(10)
       .label('Password')
       .required()
-  };
+  }
 };

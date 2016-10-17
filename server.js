@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const path = require('path');
 const users = require('./routes/users');
 const projects = require('./routes/projects');
+const token = require('./routes/token');
 const port = process.env.PORT || 8000;
 
 app.disable('x-powered-by');
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(users);
 app.use(projects);
+app.use(token);
 
 app.use((_req, res) => {
   res.sendStatus(404);
