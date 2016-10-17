@@ -8,40 +8,86 @@ main {
   flex: 1 0 auto;
 }
 
+nav div ul li a {
+  color: white;
+}
+
+footer.page-footer {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+nav {
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+}
+
 .navbar-fixed {
-  background-color: transparent;
   position: absolute;
   margin-top: 0;
 }
 
-#welcome {
-  margin-top: 5%;
-  position: absolute;
-  width: 100%;
-  background-color: transparent;
-  color: black;
-}
-
-#parallaximg {
-  opacity: 0.65;
-}
-
-nav {
-  background-color: transparent;
-  margin-top: 2.5%;
-  height: 40px;
-  line-height: 40px;
-  position: absolute;
+.parallax-window {
+  min-height: 600px;
+  background: #171717;
 }
 
 .navbar-wrapper {
   box-shadow: 0px;
 }
 
-nav div ul li a {
+.nav-button-container {
+  background-color: white;
+}
+
+.app-desc {
+  color:white;
+  text-align: justify;
+}
+
+.app-question {
+  color: white;
+  border-bottom: #00e524;
+  border-bottom-style: solid;
+}
+
+.material-icons {
   color: white;
 }
 
-footer {
-  margin-bottom: 0;
+.custom-green {
+  color: #00e524;
+}
+
+.white-text {
+  border-bottom: #00e524;
+  border-bottom-style: solid;
+}
+
+.name {
+  margin-left: 10px;
+}
+
+#section {
+  background-color: #171717;
+}
+
+#landing-body {
+  text-align: center;
+}
+
+#nav-button1 {
+  background-color: rgb(55, 71, 79);
+  margin: 2px 1px 2px 2px;
+}
+
+#nav-button2 {
+  background-color: rgb(55, 71, 79);
+  margin: 2px 2px 2px 1px;
+}
+
+#parallaximg {
+  background-color: #171717;
+  opacity: 0.10;
 }

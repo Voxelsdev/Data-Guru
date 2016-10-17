@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Data Guru</title>
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
@@ -11,55 +12,86 @@
   <body>
     <header>
       <div class="navbar-fixed">
-          <nav class="z-depth-0">
-            <div class="nav-wrapper">
-              <ul class="right hide-on-med-and-down">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login</a></li>
-              </ul>
-            </div>
-          </nav>
-        </div>
+        <nav class="z-depth-0 #37474f blue-grey darken-3">
+          <div class="nav-wrapper">
+            <a class="name">Data Guru</a>
+            <ul class="right hide-on-med-and-down">
+              <li><div class ="nav-button-container"><a href="./index.html" id="nav-button1">Login</a></div></li>
+              <li><div class ="nav-button-container"><a href="./login.html" id="nav-button2">Signup</a></div></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
 
-        <div class="section" id="welcome">
-          <div class="row container">
-            <h2 class="header">Welcome to Data Guru!</h2>
+      <div class="parallax-window" data-parallax="scroll" data-image-src="./images/landing.png" id="parallaximg"></div>
+    </header>
+
+    <section id="section">
+      <div class="row" id="landing-body">
+        <div class="col s4">
+          <div class="row">
+            <i class="medium material-icons">http</i>
+          </div>
+          <div class="row"><h4 class="app-question">What is this?</h4></div>
+          <div class="row">
+            <div class="col s8 offset-s2">
+              <p class="app-desc">Data Guru is an online service that allows for
+              Developers and Hobbyists to filter through Big Data provided by Socrata.
+              Users can create, manage, and save projects that contain many datasets.</p>
+            </div>
           </div>
         </div>
 
-      <div class="parallax-container">
-        <div class="parallax"><img id="parallaximg" src="images/package.jpg"></div>
-      </div>
-      <div class="section white">
-        <div class="row container">
-          <h2 class="header">Parallax</h2>
-          <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+        <div class="col s4">
+          <div class="row">
+            <i class="medium material-icons">equalizer</i>
+          </div>
+          <div class="row"><h4 class="app-question">Why do you need this?</h4></div>
+          <div class="row">
+            <div class="col s8 offset-s2">
+              <p class="app-desc">This app allows for easy access to tons of data,
+              and also allows users to visualize information that they are recieving.
+              The ability to see what you are getting from multiple sources in one place is huge.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <div class="row">
+            <i class="medium material-icons">person_pin</i>
+          </div>
+          <div class="row"><h4 class="app-question">Who uses this?</h4></div>
+          <div class="row">
+            <div class="col s8 offset-s2">
+              <p class="app-desc"></p>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
+    </section>
 
-    <footer class="page-footer">
+    <footer class="page-footer #424242 grey darken-3">
       <div class="container">
         <div class="row">
           <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+            <h5 class="white-text">Contact Info</h5>
+            <p class="grey-text text-lighten-4">111 S. Jackson St.</p>
+            <p class="grey-text text-lighten-4">Seattle WA. 90101</p>
+            <p class="grey-text text-lighten-4"></p>
           </div>
           <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Links</h5>
+            <h5 class="white-text">Navigation</h5>
             <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+              <li><a class="grey-text text-lighten-3" href="login.html">Login</a></li>
+              <li><a class="grey-text text-lighten-3" href="signup.html">Signup</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://mikeechen-jquerycalc.surge.sh/">Need a calculator?</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="footer-copyright">
         <div class="container">
-        © 2014 Copyright Text
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        © 2016 Copyright
         </div>
       </div>
     </footer>
@@ -67,7 +99,8 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script src="./js/parallax.min.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
   </body>
 
 </html>
