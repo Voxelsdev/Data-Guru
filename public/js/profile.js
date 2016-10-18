@@ -26,6 +26,7 @@
 
     $.ajax(options)
     .done((projectInfo) => {
+      console.log(projectInfo);
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li>');
           const $header = $(`<div class="collapsible-header">${projectInfo[i].datasetName}`);
@@ -43,6 +44,7 @@
         $li.append($header);
         $mainUl.append($li);
       }
+      $('#sub-container').append($mainUl);
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
@@ -163,10 +165,10 @@ function checkInfo() {
     console.log('lmao u thought u were gettin a project');
   });
 
-  $('.projects').on('click', (event) => {
-    setview(0, parseInt(event.target.siblings().text()));
+  $('section').on('click', '.projects', (event) => {
+    console.log($(event.target).siblings().text());
+    setview(0, parseInt($(event.target).siblings().text()));
   });
-
   $('section').on('change', '.choice', checkInfo);
   $('section').on('blur', '.location', checkInfo);
 
