@@ -26,7 +26,6 @@
 
     $.ajax(options)
     .done((projectInfo) => {
-      console.log(projectInfo);
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li>');
           const $header = $(`<div class="collapsible-header">${projectInfo[i].datasetName}`);
@@ -45,6 +44,7 @@
         $mainUl.append($li);
       }
       $('#sub-container').append($mainUl);
+      $('#sub-container').append(`<button class="btn generalbutt" id="datasetSearh">Search Datasets!</button>`);
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
@@ -57,16 +57,18 @@
     if (!$('#sub-container').hasClass('valign-wrapper')) {
       $('#sub-container').toggleClass('valign-wrapper');
     }
-    const labels = ['I want', 'In the Category of', 'In the Location'];
+    const labels = ['I want', 'In the Category of', 'In the Location', 'In the Domain of', 'With a tag'];
     const dataTypes = ['','datasets', 'filters', 'charts', 'maps',
                       'datalenses', 'stories', 'files', 'hrefs'];
     const categories = ['','finance', 'public safety', 'infrastructure',
                         'environment', 'demographics', 'economy', 'transportation',
                         'education', 'health', 'housing and development', 'social services',
                         'politics', 'recreation'];
-    const $selectordiv = $('<div class="container valign selectordiv">');
+    const $selectordiv = $('<div class="container valign" id="selectordiv">');
     const $dataSelect = $('<select class="choice" id="dataType">');
     const $categorySelect = $('<select class="choice" id="category">');
+    const $domainSelect = $('<select class="choice" id="domain" disabled>');
+    const $tagSelect = $('<select class="choice" id="tags" disabled>');
 
     for (let i = 0; i < dataTypes.length; i++) {
       if (i === 0) {
@@ -78,7 +80,7 @@
 
     for (let i = 0; i < categories.length; i++) {
       if (i === 0) {
-        $categorySelect.append(`<option value="" disabled selected>Choose a Data Type</option>`);
+        $categorySelect.append(`<option value="" disabled selected>Choose a Category</option>`);
       } else {
         $categorySelect.append(`<option value="${categories[i]}">${categories[i]}</option>`);
       }
@@ -93,8 +95,12 @@
         $colDiv.append($dataSelect);
       } else if (i === 1) {
         $colDiv.append($categorySelect);
-      } else {
+      } else if (i === 2) {
         $colDiv.append(`<input placeholder="Enter a Location" id="location" type="text" class="location">`);
+      } else if (i === 3) {
+        $colDiv.append($domainSelect);
+      } else {
+        $colDiv.append($tagSelect);
       }
       $rowDiv.append($colDiv);
       $selectordiv.append($rowDiv);
@@ -103,11 +109,15 @@
     $('#sub-container').append($selectordiv);
   }
 
-function checkInfo() {
-  const dataType = $('#dataType option:selected').text();
-  const category = $('#category option:selected').text();
-  const location = $('#location').val();
-}
+  function checkInfo() {
+    const dataType = $('#dataType option:selected').text();
+    const category = $('#category option:selected').text();
+    const location = $('#location').val();
+
+    if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '') {
+      callAjax();
+    }
+  }
 
   function addProjects(data) {
     $('#projects').empty();
@@ -240,11 +250,12 @@ function checkInfo() {
   });
 
   $('section').on('click', '.projects', (event) => {
-    console.log($(event.target).siblings().text());
     setview(0, parseInt($(event.target).siblings().text()));
+  });
+  $('section').on('click', '#datasetSearh', () => {
+    setview(1);
+    $('select').material_select();
   });
   $('section').on('change', '.choice', checkInfo);
   $('section').on('blur', '.location', checkInfo);
-
-  $('select').material_select();
 })();

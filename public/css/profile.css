@@ -179,6 +179,15 @@ input[type=radio   ]:not(old) + label{
   margin-top: 10%;
 }
 
+.generalbutt {
+  font-size: 70%;
+  background-color: #00b21c;
+}
+
+.generalbutt:hover {
+  background-color: #00e524;
+}
+
 #logout {
   border: 2px solid white;
 }
@@ -232,11 +241,13 @@ input[type=radio   ]:not(old) + label{
   overflow-y: scroll;
 }
 
-#submitbutt {
-  font-size: 70%;
-  background-color: #00b21c;
-}
-
-#submitbutt:hover {
-  background-color: #00e524;
+#selectordiv {
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  background-color: white;
+  margin-top: 9%;
+  height: 70vh;
 }

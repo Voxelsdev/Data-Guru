@@ -28,7 +28,7 @@ router.get('/projects', authorize, (req, res, next) => {
 
   knex('projects')
   .where('user_id', userId)
-  .orderBy('created_at', 'DESC')
+  .orderBy('id', 'ASC')
   .then((rows) => {
     res.send(camelizeKeys(rows));
   })
@@ -48,6 +48,7 @@ router.get('/projects/:id', authorize, (req, res, next) => {
   .where('projects.user_id', userId)
   .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
   .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
+  .orderBy('datasets.id', 'ASC')
   .then((rows) => {
     const project = camelizeKeys(rows);
 
