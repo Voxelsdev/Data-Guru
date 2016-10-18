@@ -110,6 +110,7 @@ function checkInfo() {
 }
 
   function addProjects(data) {
+    $('#projects').empty();
     const projects = [];
 
     for(project of data) {
@@ -129,21 +130,93 @@ function checkInfo() {
     }
   }
 
-  $.ajax({
-    contentType: 'application/json',
-    type: 'GET',
-    url: '/projects'
-  })
-  .done((data) => {
-    addProjects(data);
-  })
-  .fail(($xhr) => {
-    Materialize.toast($xhr.responseText, 3000);
-  });
 
-  $('.collapsible').collapsible({
-    accordion : true
-  });
+  function promptUser() {
+    $('#info-container').fadeOut(500, () => {
+      const $promptContainer = $('<div id="prompt">');
+        const $row1 = $('<div class="row">');
+          const $name = $('<div class="input-field col s12"><i class="material-icons prefix">comment</i><input id="project_name" type="text" class="validate"><label for="project_name">Project Name</label></div>');
+        const $row2 = $('<div class="row">');
+          const $description = $('<div class="input-field col s12"><i class="material-icons prefix">comment</i><input id="project_desc" type="text" class="validate"><label for="project_desc">Project Description</label></div>');
+        const $row3 = $('<div class="row">');
+          const $col1 = $('<div class="col s6">');
+            const $submit = $('<a class="waves-effect waves-light btn" id="save-project">Save</a>');
+          const $col2 = $('<div class="col s6">');
+            const $cancel = $('<a class="waves-effect waves-light btn" id="cancel-project">Cancel</a>');
+
+      $row1.append($name);
+      $row2.append($description);
+      $row3.append($col2);
+      $row3.append($col1);
+      $col1.append($submit);
+      $col2.append($cancel);
+      $promptContainer.append($row1);
+      $promptContainer.append($row2);
+      $promptContainer.append($row3);
+      $('#project-list').after($promptContainer);
+
+      $submit.on('click', () => {
+        const name = $('#project_name').val();
+        const description = $('#project_desc').val();
+
+        if (!name && !description) {
+          return Materialize.toast('Please enter a project name and description.', 2000);
+        }
+
+        if (!name) {
+          return Materialize.toast('Please enter a project name.', 2000);
+        }
+
+        if (!description) {
+          return Materialize.toast('Please enter a project description.', 2000);
+        }
+
+        const body = JSON.stringify({ name, description });
+        const options = {
+          contentType: 'application/json',
+          data: body,
+          dataType: 'json',
+          type: 'POST',
+          url: 'projects'
+        }
+
+        $.ajax(options)
+        .done(() => {
+          $('#prompt').remove();
+          makeProjectRequest();
+          Materialize.toast('Project created!', 2000);
+          $('#info-container').fadeIn(500);
+        })
+        .fail(($xhr) => {
+          Materialize.toast($xhr.responseText, 3000);
+        });
+      });
+
+      $cancel.on('click', () => {
+        $('#prompt').remove();
+        $('#info-container').fadeIn(500);
+      });
+    });
+  }
+
+  function makeProjectRequest() {
+    $.ajax({
+      contentType: 'application/json',
+      type: 'GET',
+      url: '/projects'
+    })
+    .done((data) => {
+      addProjects(data);
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
+    });
+
+    $('.collapsible').collapsible({
+      accordion : true
+    });
+  }
+  makeProjectRequest();
 
   $('#logout').on('click', () => {
     const options = {
@@ -161,8 +234,9 @@ function checkInfo() {
     });
   });
 
+  // needs to post a blank project
   $('#make-project').on('click', () => {
-    console.log('lmao u thought u were gettin a project');
+    promptUser();
   });
 
   $('section').on('click', '.projects', (event) => {
