@@ -26,8 +26,7 @@
 
     $.ajax(options)
     .done((projectInfo) => {
-      projectInfo = JSON.parse(projectInfo);
-      for (let i = 0; i < projectInfo.length) {
+      for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li>');
           const $header = $(`<div class="collapsible-header">${projectInfo[i].datasetName}`);
           const $body = $('<div class="collapsible-body">');
@@ -81,7 +80,7 @@
     url: 'projects'
   })
   .done((data) => {
-    addProjects(JSON.parse(data));
+    addProjects(data);
   })
   .fail(($xhr) => {
     Materialize.toast($xhr.responseText, 3000);
