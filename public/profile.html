@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Profile</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./css/profile.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar-fixed">
+        <nav class="z-depth-0 #37474f blue-grey darken-3">
+          <div class="nav-wrapper">
+            <a class="name" href='./index.html'>Data Guru</a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="./index.html" id="logout">Logout</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section>
+      <div id="project-list">
+        <div id="new-project">
+          <div id="new-button">
+            <p id="new">New Project</p>
+            <a class="btn-floating btn-large waves-effect waves-dark #8bc34a light-green" id="make-project"><i class="material-icons">add</i></a>
+          </div>
+        </div>
+        <div id="projects">
+          <!-- tppi (test project please ignore) -->
+          <div class="grey-project-container">
+            <a class="btn-large waves-effect waves-dark #8bc34a light-green projects">Project Name</a>
+            <div class="project-id"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="info-container">
+        <div class="row">
+          <div class="col s8 offset-s2" id="sub-container">
+            <!-- FOR EACH DATASET MAKE ONE OF THESE -->
+            <div class="dataset-container">
+              <div class="data-checkbox">
+                <p class="p-checkbox">
+                  <input type="checkbox" class="filled-in custom-color" id="filled-in-box1" checked="checked" />
+                  <label for="filled-in-box1"></label>
+                </p>
+              </div>
+
+              <div class="data-name">
+                blah
+              </div>
+
+              <div class="data-desc">
+                stuff and things
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="./js/profile.js"></script>
+  </body>
+</html>
