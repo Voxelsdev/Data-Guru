@@ -20,9 +20,15 @@ function authorize (req, res, next) {
   });
 }
 
-router.get('/datasets', authorize, (req, res, next) => {
+router.get('/datasets', (req, res, next) => {
   const { url } = req.body;
-  getJSON(url)
+  const option = {
+    uri: url,
+    headers: {
+      'X-App-Token': 'zNfDL0xiEqLfIGY93LRvszBI6'
+    }
+  };
+  getJSON(option)
     .then((data) => {
       const reponseBody = data.results.map((elm) => {
         const resource = elm.resource;
