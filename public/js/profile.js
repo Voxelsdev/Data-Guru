@@ -6,10 +6,6 @@
         setProjectView();
         break;
       case 1:
-        // view dataset
-        setDatasetView();
-        break;
-      case 2:
         // make dataset
         setMakeDataset();
         break;
@@ -24,10 +20,6 @@
 
 
     $('#info-container').empty();
-  }
-
-  function setDatasetView() {
-
   }
 
   function setMakeDataset() {
@@ -64,6 +56,10 @@
   })
   .fail(($xhr) => {
     Materialize.toast($xhr.responseText, 3000);
+  });
+
+  $('.collapsible').collapsible({
+    accordion : true
   });
 
   $('#logout').on('click', () => {
