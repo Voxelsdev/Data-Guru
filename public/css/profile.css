@@ -119,6 +119,14 @@ input[type=radio   ]:not(old) + label{
   align-items: center;
 }
 
+.dropdowndiv {
+  font-size: 150%;
+}
+
+.dropdown-button:hover {
+  background-color: #00e524;
+}
+
 #logout {
   border: 2px solid white;
 }
@@ -170,4 +178,13 @@ input[type=radio   ]:not(old) + label{
     margin-top: 9%;
     height: 70vh;
     overflow-y: scroll;
+}
+
+#submitbutt {
+  font-size: 70%;
+  background-color: #00b21c;
+}
+
+#submitbutt:hover {
+  background-color: #00e524;
 }

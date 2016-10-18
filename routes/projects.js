@@ -44,7 +44,8 @@ router.get('/projects/:id', authorize, (req, res, next) => {
 
   knex('projects')
   .select()
-  .where('user_id', userId)
+  .where('projects.id', projectId)
+  .where('projects.user_id', userId)
   .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
   .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
   .then((rows) => {

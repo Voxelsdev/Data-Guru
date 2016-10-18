@@ -51,8 +51,61 @@
   }
 
   function setMakeDataset() {
+    $('#sub-container').empty();
+    if (!$('#sub-container').hasClass('valign-wrapper')) {
+      $('#sub-container').toggleClass('valign-wrapper');
+    }
+    const labels = ['I want', 'In the Category of', 'In the Location'];
+    const dataTypes = ['','datasets', 'filters', 'charts', 'maps',
+                      'datalenses', 'stories', 'files', 'hrefs'];
+    const categories = ['','finance', 'public safety', 'infrastructure',
+                        'environment', 'demographics', 'economy', 'transportation',
+                        'education', 'health', 'housing and development', 'social services',
+                        'politics', 'recreation'];
+    const $selectordiv = $('<div class="container valign selectordiv">');
+    const $dataSelect = $('<select class="choice" id="dataType">');
+    const $categorySelect = $('<select class="choice" id="category">');
 
+    for (let i = 0; i < dataTypes.length; i++) {
+      if (i === 0) {
+        $dataSelect.append(`<option value="" disabled selected>Choose a Data Type</option>`);
+      } else {
+        $dataSelect.append(`<option value="${dataTypes[i]}">${dataTypes[i]}</option>`);
+      }
+    }
+
+    for (let i = 0; i < categories.length; i++) {
+      if (i === 0) {
+        $categorySelect.append(`<option value="" disabled selected>Choose a Data Type</option>`);
+      } else {
+        $categorySelect.append(`<option value="${categories[i]}">${categories[i]}</option>`);
+      }
+    }
+
+    for (let i = 0; i < labels.length; i++) {
+      const $rowDiv = $('<div class="row">')
+      const $colDiv = $('<div class="col s4">');
+
+      $rowDiv.append(`<p class="col s5">${labels[i]}</p>`);
+      if (i === 0) {
+        $colDiv.append($dataSelect);
+      } else if (i === 1) {
+        $colDiv.append($categorySelect);
+      } else {
+        $colDiv.append(`<input placeholder="Enter a Location" id="location" type="text" class="location">`);
+      }
+      $rowDiv.append($colDiv);
+      $selectordiv.append($rowDiv);
+    }
+
+    $('#sub-container').append($selectordiv);
   }
+
+function checkInfo() {
+  const dataType = $('#dataType option:selected').text();
+  const category = $('#category option:selected').text();
+  const location = $('#location').val();
+}
 
   function addProjects(data) {
     const projects = [];
@@ -77,7 +130,7 @@
   $.ajax({
     contentType: 'application/json',
     type: 'GET',
-    url: 'projects'
+    url: '/projects'
   })
   .done((data) => {
     addProjects(data);
@@ -113,4 +166,9 @@
   $('.projects').on('click', (event) => {
     setview(0, parseInt(event.target.siblings().text()));
   });
+
+  $('section').on('change', '.choice', checkInfo);
+  $('section').on('blur', '.location', checkInfo);
+
+  $('select').material_select();
 })();
