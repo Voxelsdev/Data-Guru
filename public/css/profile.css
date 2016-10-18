@@ -20,6 +20,10 @@ nav {
   line-height: 40px;
 }
 
+li {
+  width: 100%;
+}
+
 .navbar-fixed {
   position: absolute;
   margin-top: 0;
@@ -48,13 +52,6 @@ nav {
   border-radius: 0px;
 }
 
-.dataset-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-}
-
 .data-checkbox {
   width: 50px;
   height: 50px;
@@ -71,20 +68,55 @@ input[type=radio   ]:not(old) + label{
   min-width: 20px;
 }
 
+.row .col {
+  padding: 0;
+}
+
 .custom-color[type="checkbox"].filled-in:checked + label:after{
-     border: 2px solid #ff9800;
-     background-color: #ff9800;
+  border: 2px solid #ff9800;
+  background-color: #ff9800;
 }
 
 .p-checkbox {
   width: 20px;
   height: 20px;
-  padding: 15px 0;
-  margin: auto;
 }
 
-.row .col {
-  padding: 0;
+.d-email-me {
+  width: 300px;
+  height: 100px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 85%;
+}
+
+.d-description {
+  border-top: 2px solid black;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
+}
+
+.d-link {
+  border-top: 2px solid black;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
+}
+
+.collapsible-body {
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: baseline;
+}
+
+.collapsible-body p {
+  height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 #logout {
@@ -130,7 +162,12 @@ input[type=radio   ]:not(old) + label{
 }
 
 #sub-container {
-  background-color: white;
-  margin-top: 9%;
-  height: 70vh;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    background-color: white;
+    margin-top: 9%;
+    height: 70vh;
+    overflow-y: scroll;
 }
