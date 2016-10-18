@@ -20,7 +20,7 @@ function authorize (req, res, next) {
   });
 }
 
-router.get('/datasets', (req, res, next) => {
+router.get('/datasets', authorize, (req, res, next) => {
   const { url } = req.body;
   const option = {
     uri: url,
