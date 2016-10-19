@@ -55,8 +55,8 @@
 
       const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
         const $deleteLi = $('<li>');
-          const $deleteHeader = $('<div class="collapsible-header"><i class="material-icons">new_releases</i>Delete Project</div>');
-          const $deleteBody = $('<div class="collapsible-body">');
+          const $deleteHeader = $('<div class="collapsible-header" id="delete-collapse-header"><i class="material-icons">new_releases</i>Delete Project</div>');
+          const $deleteBody = $('<div class="collapsible-body" id="delete-collapse-body">');
             const $checkRow = $('<div class="row">');
               const $check = $('<div class="input-field col s12"><input id="check-delete" type="text" class="validate"><label for="check-delete">Enter Project Name</label></div>');
             const $confirmRow = $('<div class="row">');

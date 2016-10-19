@@ -162,6 +162,15 @@ input[type=radio   ]:not(old) + label{
   background-color: #b5d98c;
 }
 
+.generalbutt {
+  font-size: 70%;
+  background-color: #00b21c;
+}
+
+.generalbutt:hover {
+  background-color: #00e524;
+}
+
 #delete-project {
   background-color: #e60000;
 }
@@ -181,15 +190,6 @@ input[type=radio   ]:not(old) + label{
 
 #prompt .row {
   margin-top: 10%;
-}
-
-.generalbutt {
-  font-size: 70%;
-  background-color: #00b21c;
-}
-
-.generalbutt:hover {
-  background-color: #00e524;
 }
 
 #logout {
@@ -254,4 +254,18 @@ input[type=radio   ]:not(old) + label{
   background-color: white;
   margin-top: 9%;
   height: 70vh;
+}
+
+#delete-collapse-header {
+  color: white;
+  background-color: #555;
+}
+
+#delete-collapse-body {
+  color: white;
+  background-color: #888;
+}
+
+#check-delete {
+  width: 200%;
 }
