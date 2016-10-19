@@ -7,7 +7,7 @@
         break;
       case 1:
         // make dataset
-        setMakeDataset(projectId);
+        setMakeDataset();
         break;
       default:
         console.log('something went wrong...');
@@ -49,6 +49,8 @@
         const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
         $mainUl.append($hiddenName);
         $mainUl.append($hiddenId);
+
+        $('#datasetSearch').siblings().text(projectInfo[0].projectId);
       }
       $('#sub-container').append($mainUl);
 
@@ -106,7 +108,13 @@
 
   }
 
-  function setMakeDataset(projectId) {
+  function setProjecId(){
+    $('#info-container').off('click');
+    const id = parseInt($('#datasetSearch').siblings().text());
+    setProjectView(id);
+  }
+
+  function setMakeDataset() {
     $('#sub-container').empty();
 
     const labels = ['I want', 'In the Category of', 'In the Location', 'In the Domain of', 'With a tag'];
@@ -157,8 +165,13 @@
     }
 
     $('#sub-container').append($selectordiv);
-    $('#info-container').on('click', (projectId) => {
-      setProjectView(projectId);
+    $('#info-container').on('click', '.closerow', (event) => {
+      if ($(event.target).hasClass('closerow')) {
+        const projectId = parseInt($('#datasetSearch').siblings().text());
+
+        setProjectView(projectId);
+        $('#info-container').off('click');
+      }
     });
   }
 
@@ -383,7 +396,7 @@
   $('section').on('click', '.projects', (event) => {
     setview(0, parseInt($(event.target).siblings().text()));
   });
-  $('section').on('click', '#datasetSearch', () => {
+  $('section').on('click', '#datasetSearch', (event) => {
     if ($('#project-view').length) {
       setview(1);
       $('select').material_select();
