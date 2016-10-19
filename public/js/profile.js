@@ -109,9 +109,7 @@
 
   function setMakeDataset() {
     $('#sub-container').empty();
-    if (!$('#sub-container').hasClass('valign-wrapper')) {
-      $('#sub-container').toggleClass('valign-wrapper');
-    }
+
     const labels = ['I want', 'In the Category of', 'In the Location', 'In the Domain of', 'With a tag'];
     const dataTypes = ['','datasets', 'filters', 'charts', 'maps',
                       'datalenses', 'stories', 'files', 'hrefs'];
@@ -119,11 +117,9 @@
                         'environment', 'demographics', 'economy', 'transportation',
                         'education', 'health', 'housing and development', 'social services',
                         'politics', 'recreation'];
-    const $selectordiv = $('<div class="container valign" id="selectordiv">');
+    const $selectordiv = $('<div class="container" id="selectordiv">');
     const $dataSelect = $('<select class="choice" id="dataType">');
     const $categorySelect = $('<select class="choice" id="category">');
-    const $domainSelect = $('<select class="choice" id="domain" disabled>');
-    const $tagSelect = $('<select class="choice" id="tags" disabled>');
 
     for (let i = 0; i < dataTypes.length; i++) {
       if (i === 0) {
@@ -142,8 +138,8 @@
     }
 
     for (let i = 0; i < labels.length; i++) {
-      const $rowDiv = $('<div class="row">')
-      const $colDiv = $('<div class="col s4">');
+      const $rowDiv = $('<div class="row">');
+      const $colDiv = $('<div class="col s5">');
 
       $rowDiv.append(`<p class="col s5">${labels[i]}</p>`);
       if (i === 0) {
@@ -153,9 +149,9 @@
       } else if (i === 2) {
         $colDiv.append(`<input placeholder="Enter a Location" id="location" type="text" class="location">`);
       } else if (i === 3) {
-        $colDiv.append($domainSelect);
+        $colDiv.append('<select id="domains" disabled>');
       } else {
-        $colDiv.append($tagSelect);
+        $colDiv.append('<select id="tags" disabled>');
       }
       $rowDiv.append($colDiv);
       $selectordiv.append($rowDiv);
@@ -170,7 +166,57 @@
     const location = $('#location').val();
 
     if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '') {
-      callAjax();
+      const categories = 'categories=' + category;
+      const only = 'only=' + dataType;
+      const q = 'q=' + location;
+      const url = `http://api.us.socrata.com/api/catalog/v1?${categories}&${only}&${q}`;
+      $.getJSON(url)
+      .done((data) => {
+        const domains = [];
+        const tags = [];
+
+        data.results.forEach((elm) => {
+          const metadata = elm.metadata;
+          const dTags = elm.classification.domain_tags;
+          domains.push(metadata.domain);
+          dTags.forEach((element) => {
+            tags.push(element);
+          });
+        });
+        const $domainRow = $('#domains').closest('.row');
+        const $tagsRow = $('#tags').closest('.row');
+        const $domainSelect = $('<select id="domains">');
+        const $tagSelect = $('<select id="tags">');
+        const $colDiv1 = $('<div class="col s5">');
+        const $colDiv2 = $('<div class="col s5">');
+
+        $('#domains').closest('div').remove();
+        $('#tags').closest('div').remove();
+
+        domains.forEach((elm) => {
+          $domainSelect.append(`<option value="${elm}">${elm}</option>`);
+        });
+
+        tags.forEach((elm) => {
+          $tagSelect.append(`<option value="${elm}">${elm}</option>`)
+        });
+
+        $colDiv1.append($domainSelect);
+        $colDiv2.append($tagSelect);
+        $domainRow.append($colDiv1);
+        $tagsRow.append($colDiv2);
+
+        const $newRow = $('<div class="row">');
+        const $newCol = $('<div class="col s12">');
+        const $submitButt = $(`<button class="btn generalbutt" type="submit" id="submitbutt">Submit</button>`);
+        $newCol.append($submitButt);
+        $newRow.append($newCol);
+        $('#selectordiv').append($newRow);
+        $('select').material_select();
+      })
+      .fail(($xhr) => {
+        Materialize.toast($xhr.responseText, 3000);
+      });
     }
   }
 
