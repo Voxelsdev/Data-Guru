@@ -50,7 +50,7 @@
         $mainUl.append($hiddenName);
         $mainUl.append($hiddenId);
 
-        $('#datasetSearch').siblings().text(projectInfo[0].projectId);
+        $('#project-id-container').text(projectInfo[0].projectId);
       }
       $('#sub-container').append($mainUl);
 
@@ -110,7 +110,7 @@
 
   function setProjecId(){
     $('#info-container').off('click');
-    const id = parseInt($('#datasetSearch').siblings().text());
+    const id = parseInt($('#project-id-container').text());
     setProjectView(id);
   }
 
@@ -167,7 +167,7 @@
     $('#sub-container').append($selectordiv);
     $('#info-container').on('click', '.closerow', (event) => {
       if ($(event.target).hasClass('closerow')) {
-        const projectId = parseInt($('#datasetSearch').siblings().text());
+        const projectId = parseInt($('#project-id-container').text());
 
         setProjectView(projectId);
         $('#info-container').off('click');
@@ -279,7 +279,13 @@
           $mainUl.append($li);
         });
         $('#sub-container').append($mainUl);
-        $('#sub-container').append(`<button class="btn">Back to Project</button>`);
+        $('#sub-container').append(`<button class="btn" id="back-to-project">Back to Project</button>`);
+        $('#back-to-project').on('click', () => {
+          const projectId = parseInt($('#project-id-container').text());
+
+          setProjectView(projectId);
+          $('#info-container').off('click');
+        });
         $('.collapsible').collapsible();
       })
       .fail(($xhr) => {

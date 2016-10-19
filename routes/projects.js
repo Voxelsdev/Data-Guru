@@ -172,12 +172,12 @@ router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, nex
     });
 });
 
-router.delete('/projects/:id/data', authorize, ev(validations.deleteWithQuery), (req, res, next) => {
+router.delete('/projects/data/:id', authorize, ev(validations.deleteWithQuery), (req, res, next) => {
   const { userId } = req.token;
   let dataset_project;
 
   knex('datasets_projects')
-    .where('id', req.query.id)
+    .where('id', req.params.id)
     .first()
     .then((row) => {
       if (!row) {
@@ -187,7 +187,7 @@ router.delete('/projects/:id/data', authorize, ev(validations.deleteWithQuery), 
       dataset_project = camelizeKeys(row);
 
       return knex('datasets_projects')
-        .where('id', req.query.id)
+        .where('id', req.params.id)
         .del();
     })
     .then(() => {
