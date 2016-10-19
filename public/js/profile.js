@@ -178,37 +178,31 @@
         data.results.forEach((elm) => {
           const metadata = elm.metadata;
           const dTags = elm.classification.domain_tags;
-          domains.push(metadata.domain);
+          if (domains.indexOf(metadata.domain) < 0) {
+            domains.push(metadata.domain);
+          }
           dTags.forEach((element) => {
-            tags.push(element);
+            if (tags.indexOf(element) < 0) {
+              tags.push(element);
+            }
           });
         });
-        const $domainRow = $('#domains').closest('.row');
-        const $tagsRow = $('#tags').closest('.row');
-        const $domainSelect = $('<select id="domains">');
-        const $tagSelect = $('<select id="tags">');
-        const $colDiv1 = $('<div class="col s5">');
-        const $colDiv2 = $('<div class="col s5">');
 
-        $('#domains').closest('div').remove();
-        $('#tags').closest('div').remove();
+        $('#domains').prop('disabled', false);
+        $('#tags').prop('disabled', false);
 
         domains.forEach((elm) => {
-          $domainSelect.append(`<option value="${elm}">${elm}</option>`);
+          $('#domains').append(`<option value="${elm}">${elm}</option>`);
         });
 
         tags.forEach((elm) => {
-          $tagSelect.append(`<option value="${elm}">${elm}</option>`)
+          $('#tags').append(`<option value="${elm}">${elm}</option>`)
         });
-
-        $colDiv1.append($domainSelect);
-        $colDiv2.append($tagSelect);
-        $domainRow.append($colDiv1);
-        $tagsRow.append($colDiv2);
 
         const $newRow = $('<div class="row">');
         const $newCol = $('<div class="col s12">');
         const $submitButt = $(`<button class="btn generalbutt" type="submit" id="submitbutt">Submit</button>`);
+
         $newCol.append($submitButt);
         $newRow.append($newCol);
         $('#selectordiv').append($newRow);
@@ -218,6 +212,21 @@
         Materialize.toast($xhr.responseText, 3000);
       });
     }
+  }
+
+  function dataFind() {
+    const dataType = $('#dataType option:selected').text();
+    const category = $('#category option:selected').text();
+    const location = $('#location').val();
+    const domain = $('#domains').text().trim();
+    const tag = $('#tags').text().trim();
+
+    $('#sub-container').empty();
+    console.log(dataType);
+    console.log(category);
+    console.log(location);
+    console.log(domain);
+    console.log(tag);
   }
 
   function addProjects(data) {
@@ -349,7 +358,6 @@
   $('#make-project').on('click', () => {
     promptUser();
   });
-
   $('section').on('click', '.projects', (event) => {
     setview(0, parseInt($(event.target).siblings().text()));
   });
@@ -359,4 +367,5 @@
   });
   $('section').on('change', '.choice', checkInfo);
   $('section').on('blur', '.location', checkInfo);
+  $('section').on('click', '#submitbutt', dataFind);
 })();
