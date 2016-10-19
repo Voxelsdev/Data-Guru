@@ -27,7 +27,6 @@
     $.ajax(options)
     .done((projectInfo) => {
       for (let i = 0; i < projectInfo.length; i++) {
-        console.log(projectInfo[i].datasetName);
         const $li = $('<li></li>');
           const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}</div>`);
           const $body = $('<div class="collapsible-body">');
@@ -239,7 +238,7 @@
 
       $.ajax(options)
       .done((datasets) => {
-        
+        console.log(datasets);
       })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
