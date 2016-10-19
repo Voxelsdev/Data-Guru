@@ -238,10 +238,9 @@
     const dataType = $('#dataType option:selected').text().trim();
     const category = $('#category option:selected').text().trim();
     const location = $('#location').val().trim();
-    const domain = $('#domains option:selected').text().trim();
-    const tag = $('#tags option:selected').text().trim();
-    if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '' && domain !== '' && tag !== '') {
-      $('#sub-container').empty();
+    const domain = $('#domains option:selected').text().trim() || '';
+    const tag = $('#tags option:selected').text().trim() || '';
+    if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '') {
       const body = JSON.stringify({ dataType, category, location, domain, tag });
       const options = {
         contentType: 'application/json',
@@ -253,21 +252,35 @@
 
       $.ajax(options)
       .done((datasets) => {
-        // const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
-        // datasets.forEach((elm) => {
-        //   const $li = $('<li></li>');
-        //   const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}</div>`);
-        //   const $body = $('<div class="collapsible-body">');
-        //   const $desc = $(`<p class="d-description">${projectInfo[i].datasetDescription}</p>`);
-        //   const $link = $(`<p class="d-link">${projectInfo[i].datasetLink}</p>`);
-        //
-        //   $body.append($desc);
-        //   $body.append($link);
-        //   $li.append($header);
-        //   $li.append($body);
-        //   $mainUl.append($li);
-        // });
-        console.log(datasets);
+        const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
+        if (datasets.length === 0) {
+          return Materialize.toast('No Results!', 3000);
+        }
+        $('#sub-container').empty();
+
+        datasets.forEach((elm) => {
+          if (elm.datasetDescription === '') {
+            elm.datasetDescription = 'No Description Available.';
+          }
+          const $li = $('<li></li>');
+          const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${elm.datasetName}</div>`);
+          const $body = $('<div class="collapsible-body">');
+          const $desc = $(`<p class="d-description">${elm.datasetDescription}</p>`);
+          const $link = $(`<p class="d-link">${elm.datasetLink}</p>`);
+          const $addButt = $(`<button class="btn generalbutt addprobutt">Add to Project</button>`);
+          const $datasetId = $(`<div class="dataset-id">${elm.datasetKey}</div>`)
+
+          $body.append($desc);
+          $body.append($link);
+          $body.append($addButt);
+          $body.append($datasetId);
+          $li.append($header);
+          $li.append($body);
+          $mainUl.append($li);
+        });
+        $('#sub-container').append($mainUl);
+        $('#sub-container').append(`<button class="btn">Back to Project</button>`);
+        $('.collapsible').collapsible();
       })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
@@ -275,6 +288,12 @@
     } else {
       Materialize.toast('Please fill in required information!', 3000);
     }
+  }
+
+  function addData(event) {
+    console.log($('#datasetSearch').siblings().text());
+    console.log($(event.target));
+    $(event.target).remove();
   }
 
   function addProjects(data) {
@@ -420,4 +439,5 @@
   $('section').on('change', '.choice', checkInfo);
   $('section').on('blur', '.location', checkInfo);
   $('section').on('click', '#submitbutt', dataFind);
+  $('section').on('click', '.addprobutt', addData);
 })();

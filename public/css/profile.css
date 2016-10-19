@@ -180,6 +180,14 @@ input[type=radio   ]:not(old) + label{
   background-color: #00e524;
 }
 
+.d-description {
+  overflow: scroll;
+}
+
+.dataset-id {
+  display: none
+}
+
 #delete-project {
   background-color: #e60000;
 }
