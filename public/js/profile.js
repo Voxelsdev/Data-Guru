@@ -27,20 +27,21 @@
     $.ajax(options)
     .done((projectInfo) => {
       for (let i = 0; i < projectInfo.length; i++) {
-        const $li = $('<li>');
-          const $header = $(`<div class="collapsible-header">${projectInfo[i].datasetName}`);
+        console.log(projectInfo[i].datasetName);
+        const $li = $('<li></li>');
+          const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}</div>`);
           const $body = $('<div class="collapsible-body">');
             const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`)
             const $email = $('<p class="d-email-me">Email me this dataset</p>');
-            const $desc = $(`<p class="d-description">${projectInfo[i].description}</p>`);
+            const $desc = $(`<p class="d-description">${projectInfo[i].datasetDescription}</p>`);
             const $link = $(`<p class="d-link">${projectInfo[i].datasetLink}</p>`);
 
-        $body.append($link);
-        $body.append($desc);
-        $body.append($email);
         $body.append($checkBox);
-        $li.append($body);
+        $body.append($email);
+        $body.append($desc);
+        $body.append($link);
         $li.append($header);
+        $li.append($body);
         $mainUl.append($li);
       }
 

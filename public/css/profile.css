@@ -139,6 +139,15 @@ input[type=radio   ]:not(old) + label{
   flex-basis: 100%;
 }
 
+.collapsible {
+  margin: 0;
+}
+
+.collapsible-header {
+  background-color: #999;
+  border-bottom: 2px solid #ddd;
+}
+
 .collapsible-body {
   display:flex;
   flex-direction: row;
