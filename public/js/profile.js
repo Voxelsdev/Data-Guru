@@ -7,7 +7,7 @@
         break;
       case 1:
         // make dataset
-        setMakeDataset();
+        setMakeDataset(projectId);
         break;
       default:
         console.log('something went wrong...');
@@ -16,7 +16,7 @@
 
   function setProjectView(projectId) {
     $('#sub-container').empty();
-    const $mainUl = $('<ul class="collapsible" data-collapsible="accordion">');
+    const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
 
     const options = {
       contentType: 'application/json',
@@ -51,7 +51,6 @@
         $mainUl.append($hiddenId);
       }
       $('#sub-container').append($mainUl);
-      $('#sub-container').append(`<button class="btn generalbutt" id="datasetSearch">Search Datasets!</button>`);
 
       const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
         const $deleteLi = $('<li>');
@@ -107,7 +106,7 @@
 
   }
 
-  function setMakeDataset() {
+  function setMakeDataset(projectId) {
     $('#sub-container').empty();
 
     const labels = ['I want', 'In the Category of', 'In the Location', 'In the Domain of', 'With a tag'];
@@ -158,6 +157,9 @@
     }
 
     $('#sub-container').append($selectordiv);
+    $('#info-container').on('click', (projectId) => {
+      setProjectView(projectId);
+    });
   }
 
   function checkInfo() {
@@ -382,8 +384,12 @@
     setview(0, parseInt($(event.target).siblings().text()));
   });
   $('section').on('click', '#datasetSearch', () => {
-    setview(1);
-    $('select').material_select();
+    if ($('#project-view').length) {
+      setview(1);
+      $('select').material_select();
+    } else {
+      Materialize.toast('Please select a project to add the dataset to.', 3000);
+    }
   });
   $('section').on('change', '.choice', checkInfo);
   $('section').on('blur', '.location', checkInfo);

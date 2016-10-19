@@ -235,6 +235,13 @@ input[type=radio   ]:not(old) + label{
   width: 100px;
 }
 
+#new-dataset {
+  width: 100%;
+  height: 57.5px;
+  background-color: #ddd;
+  border-bottom: 2px solid black;
+}
+
 #info-container {
   align-items: stretch;
   float: right;
@@ -249,7 +256,7 @@ input[type=radio   ]:not(old) + label{
   flex-wrap: wrap;
   align-content: flex-start;
   background-color: white;
-  margin-top: 9%;
+  margin-top: 6%;
   height: 70vh;
   overflow-y: scroll;
 }
@@ -261,7 +268,7 @@ input[type=radio   ]:not(old) + label{
   justify-content: center;
   align-content: flex-start;
   background-color: white;
-  margin-top: 9%;
+  margin-top: 6%;
   height: 70vh;
 }
 
