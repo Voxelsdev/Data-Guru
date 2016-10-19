@@ -185,7 +185,11 @@ input[type=radio   ]:not(old) + label{
 }
 
 .dataset-id {
-  display: none
+  display: none;
+}
+
+.dataset-domain {
+  display: none;
 }
 
 #delete-project {

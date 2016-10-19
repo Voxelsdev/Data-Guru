@@ -6,7 +6,7 @@ module.exports.post = {
   body: {
     datasetName: joi.string()
       .required()
-      .max(50)
+      .max(100)
       .label('Dataset Name'),
 
     domain: joi.string()
@@ -18,25 +18,8 @@ module.exports.post = {
       .label('Dataset URL'),
 
     datasetDescription: joi.string()
-      .max(100)
-      .label('Dataset Description')
-  }
-};
-
-module.exports.patch = {
-  body: {
-    datasetName: joi.string()
-      .max(30)
-      .label('Dataset Name'),
-
-    domain: joi.string()
-      .label('Domain'),
-
-    datasetLink: joi.string()
-      .label('Dataset URL'),
-
-    datasetDescription: joi.string()
-      .max(100)
+      .required()
+      .max(255)
       .label('Dataset Description')
   }
 };

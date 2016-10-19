@@ -265,19 +265,21 @@
             elm.datasetDescription = 'No Description Available.';
           }
           const $li = $('<li></li>');
-          const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${elm.datasetName}</div>`);
+          const $header = $(`<div class="collapsible-header d-name"><i class="material-icons">view_list</i>${elm.datasetName}</div>`);
           const $body = $('<div class="collapsible-body">');
           const $desc = $(`<p class="d-description">${elm.datasetDescription}</p>`);
           const $link = $(`<p class="d-link">${elm.datasetLink}</p>`);
           const $buttRow = $('<div class="row">');
           const $addButt = $(`<button class="btn generalbutt addprobutt right">Add to Project</button>`);
-          const $datasetId = $(`<div class="dataset-id">${elm.datasetKey}</div>`)
+          const $datasetId = $(`<div class="dataset-id">${elm.datasetKey}</div>`);
+          const $domain = $(`<div class="dataset-domain">${elm.datasetDomain}</div>`)
 
           $buttRow.append($addButt);
           $body.append($desc);
           $body.append($link);
           $body.append($buttRow);
           $body.append($datasetId);
+          $body.append($domain);
           $li.append($header);
           $li.append($body);
           $mainUl.append($li);
@@ -301,9 +303,33 @@
   }
 
   function addData(event) {
-    console.log($('#datasetSearch').siblings().text());
-    console.log($(event.target).parent().siblings('.d-description').text().trim());
-    $(event.target).remove();
+    const datasetName = $(event.target).parent().parent().siblings('.d-name').text().trim().substring(9);
+    const datasetKey = $(event.target).parent().siblings('.dataset-id').text().trim();
+    const datasetDescription = $(event.target).parent().siblings('.d-description').text().trim();
+    const domain = $(event.target).parent().siblings('.dataset-domain').text().trim();
+    const datasetLink = $(event.target).parent().siblings('.d-link').text().trim();
+    const projectId = parseInt($('#project-id-container').text());
+    const body = JSON.stringify({ datasetName, datasetKey, datasetDescription, domain, datasetLink });
+    const options = {
+      contentType: 'application/json',
+      data: body,
+      dataType: 'json',
+      type: 'POST',
+      url: `projects/${projectId}/datasets/add`
+    };
+
+    $.ajax(options)
+    .done((data) => {
+      if (data) {
+        Materialize.toast('Data Added!', 3000);
+        $(event.target).remove();
+      } else {
+        Materialize.toast('Oops! Something went wrong!', 3000);
+      }
+    })
+    .fail(($xhr) => {
+      Materialize.toast($xhr.responseText, 3000);
+    });
   }
 
   function addProjects(data) {
