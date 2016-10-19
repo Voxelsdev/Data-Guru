@@ -20,8 +20,13 @@ function authorize (req, res, next) {
   });
 }
 
-router.get('/datasets', authorize, (req, res, next) => {
-  const { url } = req.body;
+router.post('/datasets', (req, res, next) => {
+  const { dataType, category, location, domain, tag } = req.body;
+  const domains = 'domains=' + domain;
+  const categories = 'categories=' + category;
+  const only = 'only=' + dataType;
+  const q = 'q=' + location + ' ' + tag;
+  const url = `http://api.us.socrata.com/api/catalog/v1?${domains}&${categories}&${only}&${q}&limit=20`;
   const option = {
     uri: url,
     headers: {

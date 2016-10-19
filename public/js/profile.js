@@ -52,7 +52,7 @@
         $mainUl.append($hiddenId);
       }
       $('#sub-container').append($mainUl);
-      $('#sub-container').append(`<button class="btn generalbutt" id="datasetSearh">Search Datasets!</button>`);
+      $('#sub-container').append(`<button class="btn generalbutt" id="datasetSearch">Search Datasets!</button>`);
 
       const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
         const $deleteLi = $('<li>');
@@ -166,6 +166,9 @@
     const category = $('#category option:selected').text();
     const location = $('#location').val();
 
+    $('#domains').empty();
+    $('#tags').empty();
+
     if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '') {
       const categories = 'categories=' + category;
       const only = 'only=' + dataType;
@@ -200,13 +203,15 @@
           $('#tags').append(`<option value="${elm}">${elm}</option>`)
         });
 
-        const $newRow = $('<div class="row">');
-        const $newCol = $('<div class="col s12">');
-        const $submitButt = $(`<button class="btn generalbutt" type="submit" id="submitbutt">Submit</button>`);
+        if (!$('#submitbutt')[0]) {
+          const $newRow = $('<div class="row">');
+          const $newCol = $('<div class="col s12">');
+          const $submitButt = $(`<button class="btn generalbutt" type="submit" id="submitbutt">Submit</button>`);
 
-        $newCol.append($submitButt);
-        $newRow.append($newCol);
-        $('#selectordiv').append($newRow);
+          $newCol.append($submitButt);
+          $newRow.append($newCol);
+          $('#selectordiv').append($newRow);
+        }
         $('select').material_select();
       })
       .fail(($xhr) => {
@@ -216,18 +221,33 @@
   }
 
   function dataFind() {
-    const dataType = $('#dataType option:selected').text();
-    const category = $('#category option:selected').text();
-    const location = $('#location').val();
-    const domain = $('#domains').text().trim();
-    const tag = $('#tags').text().trim();
+    const dataType = $('#dataType option:selected').text().trim();
+    const category = $('#category option:selected').text().trim();
+    const location = $('#location').val().trim();
+    const domain = $('#domains option:selected').text().trim();
+    const tag = $('#tags option:selected').text().trim();
+    if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '' && domain !== '' && tag !== '') {
+      $('#sub-container').empty();
+      const body = JSON.stringify({ dataType, category, location, domain, tag });
+      const options = {
+        contentType: 'application/json',
+        data: body,
+        dataType: 'json',
+        type: 'POST',
+        url: '/datasets'
+      };
 
-    $('#sub-container').empty();
-    console.log(dataType);
-    console.log(category);
-    console.log(location);
-    console.log(domain);
-    console.log(tag);
+      $.ajax(options)
+      .done((datasets) => {
+        
+      })
+      .fail(($xhr) => {
+        Materialize.toast($xhr.responseText, 3000);
+      })
+    } else {
+      Materialize.toast('Please fill in required information!', 3000);
+    }
+
   }
 
   function addProjects(data) {
@@ -362,7 +382,7 @@
   $('section').on('click', '.projects', (event) => {
     setview(0, parseInt($(event.target).siblings().text()));
   });
-  $('section').on('click', '#datasetSearh', () => {
+  $('section').on('click', '#datasetSearch', () => {
     setview(1);
     $('select').material_select();
   });
