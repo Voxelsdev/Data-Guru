@@ -248,6 +248,19 @@ input[type=radio   ]:not(old) + label{
   height: 57.5px;
   background-color: #ddd;
   border-bottom: 2px solid black;
+  display: inline-block;
+}
+
+#new-dataset-p {
+  width: 100px;
+  display: inline-block;
+  color: #555;
+  font-weight: bold;
+  float: right;
+}
+
+#datasetSearch {
+  float: right;
 }
 
 #info-container {
@@ -270,11 +283,7 @@ input[type=radio   ]:not(old) + label{
 }
 
 #selectordiv {
-  display:flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
+  display: inline-block;
   background-color: white;
   margin-top: 6%;
   height: 70vh;
