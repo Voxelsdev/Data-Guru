@@ -162,6 +162,10 @@ input[type=radio   ]:not(old) + label{
   background-color: #b5d98c;
 }
 
+#delete-project {
+  background-color: #e60000;
+}
+
 #prompt {
   display: flex;
   flex-direction: column;
