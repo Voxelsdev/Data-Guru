@@ -253,15 +253,28 @@
 
       $.ajax(options)
       .done((datasets) => {
+        // const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
+        // datasets.forEach((elm) => {
+        //   const $li = $('<li></li>');
+        //   const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}</div>`);
+        //   const $body = $('<div class="collapsible-body">');
+        //   const $desc = $(`<p class="d-description">${projectInfo[i].datasetDescription}</p>`);
+        //   const $link = $(`<p class="d-link">${projectInfo[i].datasetLink}</p>`);
+        //
+        //   $body.append($desc);
+        //   $body.append($link);
+        //   $li.append($header);
+        //   $li.append($body);
+        //   $mainUl.append($li);
+        // });
         console.log(datasets);
       })
       .fail(($xhr) => {
         Materialize.toast($xhr.responseText, 3000);
-      })
+      });
     } else {
       Materialize.toast('Please fill in required information!', 3000);
     }
-
   }
 
   function addProjects(data) {
