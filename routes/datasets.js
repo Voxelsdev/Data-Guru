@@ -20,7 +20,7 @@ function authorize (req, res, next) {
   });
 }
 
-router.post('/datasets', (req, res, next) => {
+router.post('/datasets', authorize, (req, res, next) => {
   const { dataType, category, location, domain, tag } = req.body;
   const domains = 'domains=' + domain;
   const categories = 'categories=' + category;

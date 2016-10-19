@@ -252,6 +252,8 @@
 
       $.ajax(options)
       .done((datasets) => {
+        const $container = $('<div id="datadiv">')
+        const $ulRow = $('<div class="row">');
         const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
         if (datasets.length === 0) {
           return Materialize.toast('No Results!', 3000);
@@ -267,19 +269,22 @@
           const $body = $('<div class="collapsible-body">');
           const $desc = $(`<p class="d-description">${elm.datasetDescription}</p>`);
           const $link = $(`<p class="d-link">${elm.datasetLink}</p>`);
-          const $addButt = $(`<button class="btn generalbutt addprobutt">Add to Project</button>`);
+          const $buttRow = $('<div class="row">');
+          const $addButt = $(`<button class="btn generalbutt addprobutt right">Add to Project</button>`);
           const $datasetId = $(`<div class="dataset-id">${elm.datasetKey}</div>`)
 
+          $buttRow.append($addButt);
           $body.append($desc);
           $body.append($link);
-          $body.append($addButt);
+          $body.append($buttRow);
           $body.append($datasetId);
           $li.append($header);
           $li.append($body);
           $mainUl.append($li);
         });
-        $('#sub-container').append($mainUl);
-        $('#sub-container').append(`<button class="btn">Back to Project</button>`);
+        $ulRow.append($mainUl);
+        $container.append($ulRow);
+        $('#sub-container').append($container);
         $('.collapsible').collapsible();
       })
       .fail(($xhr) => {
@@ -292,7 +297,7 @@
 
   function addData(event) {
     console.log($('#datasetSearch').siblings().text());
-    console.log($(event.target));
+    console.log($(event.target).parent().siblings('.d-description').text().trim());
     $(event.target).remove();
   }
 
