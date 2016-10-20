@@ -26,6 +26,20 @@
 
     $.ajax(options)
     .done((projectInfo) => {
+      if (projectInfo.length === 0) {
+        const $row = $('<div class="row">');
+        const $texts = $(`<p><h5>Oops! Seems like you don't have any datasets saved!</h5></p>`);
+        const $button = $(`<button class="btn generalbutt searchdatasets col s3 offset-s4">Add new Datasets</button>`);
+
+        $row.append($texts);
+        $row.append($button);
+        $('#sub-container').append($row);
+        $button.on('click', () => {
+          setview(1);
+          $('select').material_select();
+        });
+      }
+
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li></li>');
           const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}<p style="display: none;" class="hidden">${projectInfo[i].datasetsProjectsId}</p></div>`);
@@ -427,24 +441,24 @@
   }
 
   function promptUser() {
+    if ($('#prompt').children().length > 0) {
+      return Materialize.toast('STAHP!', 3000);
+    }
+
     $('#info-container').fadeOut(500, () => {
       const $promptContainer = $('<div id="prompt">');
         const $row1 = $('<div class="row">');
-          const $name = $('<div class="input-field col s12"><i class="material-icons prefix">comment</i><input id="project_name" type="text" class="validate"><label for="project_name">Project Name</label></div>');
+          const $name = $('<div class="input-field col s8 offset-s2"><i class="material-icons prefix">comment</i><input id="project_name" type="text" class="validate"><label for="project_name">Project Name</label></div>');
         const $row2 = $('<div class="row">');
-          const $description = $('<div class="input-field col s12"><i class="material-icons prefix">comment</i><input id="project_desc" type="text" class="validate"><label for="project_desc">Project Description</label></div>');
+          const $description = $('<div class="input-field col s8 offset-s2"><i class="material-icons prefix">comment</i><textarea id="project_desc" type="text" class="materialize-textarea"></textarea><label for="project_desc">Project Description</label></div>');
         const $row3 = $('<div class="row">');
-          const $col1 = $('<div class="col s6">');
-            const $submit = $('<a class="waves-effect waves-light btn" id="save-project">Save</a>');
-          const $col2 = $('<div class="col s6">');
-            const $cancel = $('<a class="waves-effect waves-light btn" id="cancel-project">Cancel</a>');
+            const $submit = $('<a class="waves-effect waves-light btn generalbutt col s2 offset-s3" id="save-project">Save</a>');
+            const $cancel = $('<a class="waves-effect waves-light btn generalbutt col s2 offset-s3" id="cancel-project">Cancel</a>');
 
       $row1.append($name);
       $row2.append($description);
-      $row3.append($col2);
-      $row3.append($col1);
-      $col1.append($submit);
-      $col2.append($cancel);
+      $row3.append($submit);
+      $row3.append($cancel);
       $promptContainer.append($row1);
       $promptContainer.append($row2);
       $promptContainer.append($row3);
@@ -500,11 +514,19 @@
         .fail(($xhr) => {
           Materialize.toast($xhr.responseText, 3000);
         });
+        $('#make-project').on('click', () => {
+          promptUser();
+          $('#make-project').off();
+        });
       });
 
       $cancel.on('click', () => {
         $('#prompt').remove();
         $('#info-container').fadeIn(500);
+        $('#make-project').on('click', () => {
+          promptUser();
+          $('#make-project').off();
+        });
       });
     });
   }
@@ -546,6 +568,7 @@
 
   $('#make-project').on('click', () => {
     promptUser();
+    $('#make-project').off();
   });
   $('section').on('click', '.projects', (event) => {
     const target = $(event.target);
@@ -554,7 +577,7 @@
     $('#project-desc-above').text(target.siblings().eq(1).text());
     $('#project-name-above').text(target.text());
   });
-  $('section').on('click', '#datasetSearch', (event) => {
+  $('section').on('click', '#datasetSearch', () => {
     if ($('#project-view').length) {
       setview(1);
       $('select').material_select();

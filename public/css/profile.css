@@ -286,7 +286,7 @@ input[type=radio   ]:not(old) + label{
 }
 
 #prompt {
-  display: flex;
+  display: inline-block;
   flex-direction: column;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -296,11 +296,11 @@ input[type=radio   ]:not(old) + label{
   margin-left: auto;
   height: 50vh;
   width: 100vh;
+  color: white;
 }
 
 #prompt .row {
   margin-top: 10%;
-  display: inline-block;
 }
 
 #logout {
