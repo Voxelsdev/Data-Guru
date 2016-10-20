@@ -42,12 +42,12 @@ router.get('/projects/:id', authorize, (req, res, next) => {
   const { userId } = req.token;
   const projectId = req.params.id;
 
-  knex('projects')
-  .select()
+  knex('datasets_projects')
+  .select('datasets_projects.id AS datasets_projects_id', '*')
+  .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
+  .innerJoin('projects', 'projects.id', 'datasets_projects.project_id')
   .where('projects.id', projectId)
   .where('projects.user_id', userId)
-  .innerJoin('datasets_projects', 'datasets_projects.project_id', 'projects.id')
-  .innerJoin('datasets', 'datasets.id', 'datasets_projects.dataset_id')
   .orderBy('datasets.id', 'ASC')
   .then((rows) => {
     const project = camelizeKeys(rows);

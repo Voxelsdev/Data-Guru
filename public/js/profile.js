@@ -28,10 +28,10 @@
     .done((projectInfo) => {
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li></li>');
-          const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}<p style="display: none;" class="hidden">${projectInfo[i].id}</p></div>`);
-            const $del = $('<a class="btn-floating btn-large waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">report_problem</i></a>')
+          const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}<p style="display: none;" class="hidden">${projectInfo[i].datasetsProjectsId}</p></div>`);
+            const $del = $('<a class="btn-floating btn-large waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">new_releases</i></a>');
           const $body = $('<div class="collapsible-body">');
-            const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`)
+            const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`);
             const $email = $('<p class="d-email-me">Email me this dataset</p>');
             const $desc = $(`<p class="d-description">${projectInfo[i].datasetDescription}</p>`);
             const $link = $(`<p class="d-link">${projectInfo[i].datasetLink}</p>`);
@@ -55,7 +55,6 @@
         }
 
         $del.on('click', (event) => {
-          console.log(parseInt($del.siblings('.hidden').text()));
           const id = parseInt($del.siblings('.hidden').text());
           const options = {
             contentType: 'application/json',
@@ -73,7 +72,13 @@
         });
       }
 
-
+      if (projectInfo.length) {
+        const $hiddenName = $(`<p style="display: none;" id="hiddenName">${projectInfo[0].name}</p>`);
+        const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
+        $mainUl.append($hiddenName);
+        $mainUl.append($hiddenId);
+      }
+      $('#project-id-container').text(projectId);
       $('#sub-container').append($mainUl);
 
       const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
