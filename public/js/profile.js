@@ -72,61 +72,9 @@
         });
       }
 
-      if (projectInfo.length) {
-        const $hiddenName = $(`<p style="display: none;" id="hiddenName">${projectInfo[0].name}</p>`);
-        const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
-        $mainUl.append($hiddenName);
-        $mainUl.append($hiddenId);
-      }
-      $('#project-id-container').text(projectId);
       $('#sub-container').append($mainUl);
-
-      const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
-        const $deleteLi = $('<li>');
-          const $deleteHeader = $('<div class="collapsible-header" id="delete-collapse-header"><i class="material-icons">new_releases</i>Delete Project</div>');
-          const $deleteBody = $('<div class="collapsible-body" id="delete-collapse-body">');
-            const $checkRow = $('<div class="row">');
-              const $check = $('<div class="input-field col s12"><input id="check-delete" type="text" class="validate"><label for="check-delete">Enter Project Name</label></div>');
-            const $confirmRow = $('<div class="row">');
-              const $confirmCol = $('<div class="col s4 offset-s8">');
-                const $confirm = $('<a class="waves-effect waves-light btn" id="delete-project">Delete Project</a>');
-
-      $confirmCol.append($confirm);
-      $confirmRow.append($confirmCol);
-      $checkRow.append($check);
-      $deleteBody.append($checkRow);
-      $deleteBody.append($confirmRow);
-      $deleteLi.append($deleteHeader);
-      $deleteLi.append($deleteBody);
-      $deleteUl.append($deleteLi);
-      $('#sub-container').append($deleteUl);
-
       $('.collapsible').collapsible({
         accordion : true
-      });
-
-      $confirm.on('click', () => {
-        if (projectInfo.length) {
-          if ($('#check-delete').val() === $('#hiddenName').text()) {
-            const options = {
-              contentType: 'application/json',
-              type: 'DELETE',
-              url: `projects/${parseInt($('#hiddenId').text())}`
-            }
-            $.ajax(options)
-            .done(() => {
-              makeProjectRequest();
-              Materialize.toast('Project Deleted!', 2000);
-            })
-            .fail(($xhr) => {
-              Materialize.toast($xhr.responseText, 3000);
-            });
-          } else {
-            Materialize.toast('Whoops, wrong project!', 2000);
-          }
-        } else {
-          Materialize.toast('Sorry, but you must have at least one dataset to delete a project.', 4000);
-        }
       });
     })
     .fail(($xhr) => {
