@@ -389,6 +389,8 @@
     $mainRow.append($form);
     $mainContainer.append($mainRow);
     $('#sub-container').append($mainContainer);
+    $('#project-name-above').text(name);
+    $('#project-desc-above').text(desc);
 
     $buttRow.on('click', (event) => {
       submitProjectChange(event, id);
