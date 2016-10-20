@@ -192,6 +192,25 @@ input[type=radio   ]:not(old) + label{
   display: none;
 }
 
+.btn-floating.btn-large.delete-dataset i {
+  line-height: normal;
+}
+
+.delete-dataset {
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: none;
+  background-color: #999;
+}
+
+.delete-dataset i {
+  font-size: 45px;
+}
+
+.delete-dataset:hover {
+  background-color: #e60000;
+}
+
 #delete-project {
   background-color: #e60000;
 }

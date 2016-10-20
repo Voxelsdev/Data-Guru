@@ -172,7 +172,7 @@ router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, nex
     });
 });
 
-router.delete('/projects/data/:id', authorize, ev(validations.deleteWithQuery), (req, res, next) => {
+router.delete('/projects/data/:id', authorize, (req, res, next) => {
   const { userId } = req.token;
   let dataset_project;
 
