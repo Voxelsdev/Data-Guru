@@ -200,18 +200,12 @@ input[type=radio   ]:not(old) + label{
 }
 
 .delete-dataset {
-  width: 45px !important;
-  height: 45px !important;
   box-shadow: none;
   background-color: #999;
 }
 
-.delete-dataset i {
-  font-size: 45px;
-}
-
 .delete-dataset:hover {
-  background-color: #e60000;
+  background-color: #e60000;  
 }
 
 .edit-project {

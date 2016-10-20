@@ -43,7 +43,7 @@
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li></li>');
           const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}<p style="display: none;" class="hidden">${projectInfo[i].datasetsProjectsId}</p></div>`);
-            const $del = $('<a class="btn-floating btn-large waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">new_releases</i></a>');
+            const $del = $('<a class="btn-floating waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">new_releases</i></a>');
           const $body = $('<div class="collapsible-body">');
             const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`);
             const $email = $('<p class="d-email-me">Email me this dataset</p>');
@@ -346,6 +346,8 @@
           Materialize.toast('Project Changed Successfully!', 3000);
           makeProjectRequest();
           setProjectView(projId);
+          $('#project-name-above').text(name);
+          $('#project-desc-above').text(description);
         } else {
           Materialize.toast('Oops! Something went wrong!', 3000);
         }
