@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  $.get('http://quotes.rest/qod.json', (response) => {
+  $.get('https://quotes.rest/qod.json', (response) => {
     $('#author').text('-    ' + response.contents.quotes[0].author);
     $('#quote').text(response.contents.quotes[0].quote);
   });
