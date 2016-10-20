@@ -254,6 +254,37 @@ input[type=radio   ]:not(old) + label{
   display: none;
 }
 
+#project-name-above {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: 50px;
+  width: 66.6666666667%;
+  background-color: #8bc34a;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 4%;
+  margin-bottom: 0;
+  border-bottom: 2px solid black;
+}
+
+#project-desc-above {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  margin-bottom: 0;
+  height: 50px;
+  width: 66.6666666667%;
+  font-size: 20px;
+  font-weight: lighter;
+  background-color: #8bc34a;
+  color: white;
+  overflow: scroll;
+}
+
 #prompt {
   display: flex;
   flex-direction: column;
@@ -263,7 +294,7 @@ input[type=radio   ]:not(old) + label{
   margin-top: 9%;
   margin-right: auto;
   margin-left: auto;
-  height: 70vh;
+  height: 50vh;
   width: 100vh;
 }
 
@@ -341,16 +372,14 @@ input[type=radio   ]:not(old) + label{
   flex-wrap: wrap;
   align-content: flex-start;
   background-color: white;
-  margin-top: 6%;
-  height: 70vh;
+  height: 50vh;
   overflow-y: scroll;
 }
 
 #selectordiv {
   display: inline-block;
   background-color: white;
-  margin-top: 6%;
-  height: 70vh;
+  height: 50vh;
 }
 
 #delete-collapse-header {

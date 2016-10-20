@@ -548,7 +548,11 @@
     promptUser();
   });
   $('section').on('click', '.projects', (event) => {
-    setview(0, parseInt($(event.target).siblings().text()));
+    const target = $(event.target);
+
+    setview(0, parseInt(target.siblings().text()));
+    $('#project-desc-above').text(target.siblings().eq(1).text());
+    $('#project-name-above').text(target.text());
   });
   $('section').on('click', '#datasetSearch', (event) => {
     if ($('#project-view').length) {
