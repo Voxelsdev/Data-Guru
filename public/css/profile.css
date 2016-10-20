@@ -250,6 +250,10 @@ input[type=radio   ]:not(old) + label{
   margin-left: -10px;
 }
 
+.project-description {
+  display: none;
+}
+
 #prompt {
   display: flex;
   flex-direction: column;
@@ -360,4 +364,13 @@ input[type=radio   ]:not(old) + label{
 
 #check-delete {
   width: 200%;
+}
+
+#project-change-container {
+  display: inline-block;
+  margin-top: 10%;
+}
+
+#edit-project-name {
+  color: black;
 }

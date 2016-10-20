@@ -10,7 +10,7 @@
         setMakeDataset();
         break;
       default:
-        console.log('something went wrong...');
+        Materialize.toast('something went wrong...', 5000);
     }
   }
 
@@ -50,8 +50,6 @@
           const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
           $mainUl.append($hiddenName);
           $mainUl.append($hiddenId);
-
-          $('#project-id-container').text(projectInfo[0].projectId);
         }
 
         $del.on('click', (event) => {
@@ -72,6 +70,7 @@
         });
       }
 
+      $('#project-id-container').text(projectId);
       $('#sub-container').append($mainUl);
       $('.collapsible').collapsible({
         accordion : true
@@ -306,6 +305,87 @@
     });
   }
 
+  function submitProjectChange(event, projId) {
+    const eventName = $(event.target).val();
+    const name = $('#edit-project-name').val().trim();
+    const description = $('#edit-project-description').val().trim();
+
+    if (!eventName || eventName === 'Cancel') {
+      return setProjectView(projId);
+    } else {
+      if (!name && !description) {
+        return Materialize.toast('Please enter a project name and description.', 2000);
+      }
+
+      if (!name || name.length > 30) {
+        return Materialize.toast('Please enter a project name (must not exceed 30 characters).', 2000);
+      }
+
+      if (!description || description > 500) {
+        return Materialize.toast('Please enter a project description (must not exceed 500 characters).', 2000);
+      }
+      const body = JSON.stringify({ name, description });
+      const options = {
+        contentType: 'application/json',
+        data: body,
+        dataType: 'json',
+        type: 'PATCH',
+        url: `projects/${projId}`
+      };
+
+      $.ajax(options)
+      .done((data) => {
+        if (data) {
+          Materialize.toast('Project Changed Successfully!', 3000);
+          makeProjectRequest();
+          setProjectView(projId);
+        } else {
+          Materialize.toast('Oops! Something went wrong!', 3000);
+        }
+      })
+      .fail(($xhr) => {
+        Materialize.toast($xhr.responseText, 3000);
+      });
+    }
+  }
+
+  function editProjectWindow(event) {
+    $('#sub-container').empty();
+    const name = $(event.target).siblings('.projects').text() || $(event.target).parent().siblings('.projects').text();
+    const desc = $(event.target).siblings('.project-description').text() || $(event.target).parent().siblings('.project-description').text();
+    const id = parseInt($(event.target).siblings('.project-id').text()) || parseInt($(event.target).parent().siblings('.project-id').text());
+    const $mainContainer = $('<div class="container", id="project-change-container">');
+    const $mainRow = $('<div class="row">');
+    const $form = $('<form class="project-change">');
+    const $projNameInput = $(`<div class="row">
+                                <div class="input-field col s12">
+                                  <input id="edit-project-name" type="text" class="validate" value="${name}">
+                                  <label class="active" for="edit-project-name">Project Name</label>
+                                </div>
+                              </div>`);
+    const $projDescInput = $(`<div class="row">
+                                <div class="input-field col s12">
+                                  <textarea id="edit-project-description" class="materialize-textarea" length="500">${desc}</textarea>
+                                  <label class="active" for="edit-project-description">Description</label>
+                                </div>
+                              </div>`);
+    const $buttRow = $(`<div class="row">
+                          <input class="col s3 btn offset-s2 generalbutt" type="button" value="Submit"/>
+                          <input class="col s3 btn offset-s2 generalbutt" type="button" value="Cancel"/>
+                      </div>`);
+
+    $form.append($projNameInput);
+    $form.append($projDescInput);
+    $form.append($buttRow);
+    $mainRow.append($form);
+    $mainContainer.append($mainRow);
+    $('#sub-container').append($mainContainer);
+
+    $buttRow.on('click', (event) => {
+      submitProjectChange(event, id);
+    });
+  }
+
   function addProjects(data) {
     $('#projects').empty();
     const projects = [];
@@ -313,7 +393,8 @@
     for(project of data) {
       const name = project.name;
       const projectId = project.id;
-      projects.push({ name, projectId });
+      const projectDescription = project.description;
+      projects.push({ name, projectId, projectDescription });
     }
 
     for (project of projects) {
@@ -322,30 +403,35 @@
       const $edit = $('<a class="btn-large waves-effect waves-dark #c3814b edit-project" title="Edit this project\'s name and description"><i class="material-icons prefix">mode_edit</i></a>');
       const $del = $('<a class="btn-large waves-effect waves-dark #c34b4b delete-project" title="Delete this project, warning this is permanent"><i class="material-icons prefix">report_problem</i></a>');
       const $projId = $(`<div class="project-id">${project.projectId}</div>`);
+      const $projDesc = $(`<div class="project-description">${project.projectDescription}</div>`)
 
       $container.append($projId);
+      $container.append($projDesc);
       $container.append($name);
       $container.append($edit);
       $container.append($del);
       $('#projects').append($container);
 
-      $del.on('click', () => {
+      $del.on('click', (event) => {
+        const id = parseInt($(event.target).siblings('.project-id').text()) || parseInt($(event.target).parent().siblings('.project-id').text());
         $.ajax({
           contentType: 'application/json',
           type: 'DELETE',
-          url: `projects/${project.projectId}`
+          url: `projects/${id}`
         })
         .done(() => {
           Materialize.toast('Project deleted!', 2000);
+          $('#sub-container').empty();
           makeProjectRequest();
         })
         .fail((err) => {
           Materialize.toast(err, 3000);
         });
       });
+
+      $edit.on('click', editProjectWindow);
     }
   }
-
 
   function promptUser() {
     $('#info-container').fadeOut(500, () => {
@@ -379,12 +465,12 @@
           return Materialize.toast('Please enter a project name and description.', 2000);
         }
 
-        if (!name) {
-          return Materialize.toast('Please enter a project name.', 2000);
+        if (!name || name.length > 30) {
+          return Materialize.toast('Please enter a project name (must not exceed 30 characters).', 2000);
         }
 
-        if (!description) {
-          return Materialize.toast('Please enter a project description.', 2000);
+        if (!description || description > 500) {
+          return Materialize.toast('Please enter a project description (must not exceed 500 characters).', 2000);
         }
 
         const body = JSON.stringify({ name, description });
