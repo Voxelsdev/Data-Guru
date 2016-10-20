@@ -258,13 +258,6 @@
           $mainUl.append($li);
         });
         $('#sub-container').append($mainUl);
-        $('#sub-container').append(`<button class="btn" id="back-to-project">Back to Project</button>`);
-        $('#back-to-project').on('click', () => {
-          const projectId = parseInt($('#project-id-container').text());
-
-          setProjectView(projectId);
-          $('#info-container').off('click');
-        });
         $('.collapsible').collapsible();
       })
       .fail(($xhr) => {
