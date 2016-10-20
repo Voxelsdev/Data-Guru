@@ -23,14 +23,14 @@
       return Materialize.toast('Password must not be blank', 2000);
     }
 
-    if (password.length < 8) {
-      return Materialize.toast('Password must be at least 8 characers', 2000);
+    if (password.length < 10) {
+      return Materialize.toast('Password must be at least 10 characers', 2000);
     }
 
     if (localStorage.access === 'login') {
       var url = '/token';
     } else if (localStorage.access === 'signup') {
-      var url = '/users';
+      var url = 'users';
     }
 
     const options = {
@@ -43,7 +43,25 @@
 
     $.ajax(options)
     .done(() => {
-      window.location.href = '/profile.html';
+      if (localStorage.access === 'login') {
+        window.location.href = '/profile.html';
+      } else if (localStorage.access === 'signup') {
+        const signinOptions = {
+          contentType: 'application/json',
+          data: JSON.stringify({ email, password }),
+          dataType: 'json',
+          type: 'POST',
+          url: '/token'
+        }
+
+        $.ajax(signinOptions)
+        .done(() => {
+          window.location.href = '/profile.html';
+        })
+        .fail(() => {
+          Materialize.toast('Your account was created, but we could not log you in automatically', 4000);
+        });
+      }
     })
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
