@@ -75,7 +75,10 @@ li {
 }
 
 .projects {
-  width: 100%;
+  border-radius: 0px;
+  box-shadow: 0px;
+  width: 60%;
+  display: inline-block;
 }
 
 .project-id {
@@ -211,8 +214,40 @@ input[type=radio   ]:not(old) + label{
   background-color: #e60000;
 }
 
-#delete-project {
-  background-color: #e60000;
+.edit-project {
+  border-radius: 0px;
+  box-shadow: 0px;
+  display: inline-block;
+  color: black;
+  background-color: #c3814b;
+  width: 20%;
+  height: 54px;
+}
+
+.edit-project:hover {
+  background-color: #c3814b;
+}
+
+.edit-project i {
+  margin-left: -10px;
+}
+
+.delete-project {
+  border-radius: 0px;
+  box-shadow: 0px;
+  display: inline-block;
+  color: black;
+  background-color: #c34b4b;
+  width: 20%;
+  height: 54px;
+}
+
+.delete-project:hover {
+  background-color: #c34b4b;
+}
+
+.delete-project i {
+  margin-left: -10px;
 }
 
 #prompt {
@@ -237,6 +272,7 @@ input[type=radio   ]:not(old) + label{
 }
 
 #projects {
+  text-align: center;
   width: 100%;
   height: 100%;
 }

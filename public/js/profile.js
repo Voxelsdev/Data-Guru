@@ -29,7 +29,7 @@
       for (let i = 0; i < projectInfo.length; i++) {
         const $li = $('<li></li>');
           const $header = $(`<div class="collapsible-header"><i class="material-icons">view_list</i>${projectInfo[i].datasetName}<p style="display: none;" class="hidden">${projectInfo[i].id}</p></div>`);
-            const $del = $('<a class="btn-floating btn-large waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">new_releases</i></a>')
+            const $del = $('<a class="btn-floating btn-large waves-effect waves-dark delete-dataset" title="Delete this dataset from the project"><i class="material-icons">report_problem</i></a>')
           const $body = $('<div class="collapsible-body">');
             const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`)
             const $email = $('<p class="d-email-me">Email me this dataset</p>');
@@ -44,6 +44,15 @@
         $li.append($header);
         $li.append($body);
         $mainUl.append($li);
+
+        if (projectInfo.length) {
+          const $hiddenName = $(`<p style="display: none;" id="hiddenName">${projectInfo[0].name}</p>`);
+          const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
+          $mainUl.append($hiddenName);
+          $mainUl.append($hiddenId);
+
+          $('#project-id-container').text(projectInfo[0].projectId);
+        }
 
         $del.on('click', (event) => {
           console.log(parseInt($del.siblings('.hidden').text()));
@@ -64,14 +73,7 @@
         });
       }
 
-      if (projectInfo.length) {
-        const $hiddenName = $(`<p style="display: none;" id="hiddenName">${projectInfo[0].name}</p>`);
-        const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
-        $mainUl.append($hiddenName);
-        $mainUl.append($hiddenId);
 
-        $('#project-id-container').text(projectInfo[0].projectId);
-      }
       $('#sub-container').append($mainUl);
 
       const $deleteUl = $('<ul class="collapsible" data-collapsible="accordion">');
@@ -363,12 +365,31 @@
 
     for (project of projects) {
       const $container = $('<div class="grey-project-container">');
-      const $button = $(`<a class="btn-large waves-effect waves-dark #8bc34a light-green projects">${project.name}</a>`);
+      const $name = $(`<a class="btn-large waves-effect waves-dark #8bc34a light-green projects">${project.name}</a>`);
+      const $edit = $('<a class="btn-large waves-effect waves-dark #c3814b edit-project"><i class="material-icons prefix">mode_edit</i></a>');
+      const $del = $('<a class="btn-large waves-effect waves-dark #c34b4b delete-project"><i class="material-icons prefix">report_problem</i></a>');
       const $projId = $(`<div class="project-id">${project.projectId}</div>`);
 
       $container.append($projId);
-      $container.append($button);
+      $container.append($name);
+      $container.append($edit);
+      $container.append($del);
       $('#projects').append($container);
+
+      $del.on('click', () => {
+        $.ajax({
+          contentType: 'application/json',
+          type: 'DELETE',
+          url: `projects/${project.projectId}`
+        })
+        .done(() => {
+          Materialize.toast('Project deleted!', 2000);
+          makeProjectRequest();
+        })
+        .fail((err) => {
+          Materialize.toast(err, 3000);
+        });
+      });
     }
   }
 
@@ -476,7 +497,6 @@
     });
   });
 
-  // needs to post a blank project
   $('#make-project').on('click', () => {
     promptUser();
   });
