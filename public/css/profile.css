@@ -195,8 +195,9 @@ input[type=radio   ]:not(old) + label{
   display: none;
 }
 
-.btn-floating.btn-large.delete-dataset i {
-  line-height: normal;
+.btn-floating.delete-dataset i {
+  line-height: inherit;
+  width: inherit;
 }
 
 .delete-dataset {
@@ -205,7 +206,7 @@ input[type=radio   ]:not(old) + label{
 }
 
 .delete-dataset:hover {
-  background-color: #e60000;  
+  background-color: #e60000;
 }
 
 .edit-project {
