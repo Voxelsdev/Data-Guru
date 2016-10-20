@@ -574,8 +574,8 @@
     const target = $(event.target);
 
     setview(0, parseInt(target.siblings().text()));
-    $('#project-desc-above').text(target.siblings().eq(1).text());
-    $('#project-name-above').text(target.text());
+    $('#project-desc-above-p').text(target.siblings().eq(1).text());
+    $('#project-name-above-p').text(target.text());
   });
   $('section').on('click', '#datasetSearch', () => {
     if ($('#project-view').length) {

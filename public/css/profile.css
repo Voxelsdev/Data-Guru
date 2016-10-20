@@ -254,12 +254,16 @@ input[type=radio   ]:not(old) + label{
   display: none;
 }
 
+.starting-prompt {
+  font-size: 15px;
+}
+
 #project-name-above {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-content: flex-start;
-  height: 50px;
+  height: 52px;
   width: 66.6666666667%;
   background-color: #8bc34a;
   color: white;
@@ -268,6 +272,11 @@ input[type=radio   ]:not(old) + label{
   margin-top: 4%;
   margin-bottom: 0;
   border-bottom: 2px solid black;
+}
+
+#project-name-above-p {
+  margin-left: 5px;
+  margin-top: -5px;
 }
 
 #project-desc-above {
@@ -285,6 +294,11 @@ input[type=radio   ]:not(old) + label{
   overflow: scroll;
 }
 
+#project-desc-above-p {
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
 #prompt {
   display: inline-block;
   flex-direction: column;
@@ -294,7 +308,7 @@ input[type=radio   ]:not(old) + label{
   margin-top: 9%;
   margin-right: auto;
   margin-left: auto;
-  height: 50vh;
+  height: 70vh;
   width: 100vh;
   color: white;
 }
@@ -372,14 +386,14 @@ input[type=radio   ]:not(old) + label{
   flex-wrap: wrap;
   align-content: flex-start;
   background-color: white;
-  height: 50vh;
+  height: 60vh;
   overflow-y: scroll;
 }
 
 #selectordiv {
   display: inline-block;
   background-color: white;
-  height: 50vh;
+  height: 60vh;
 }
 
 #delete-collapse-header {
