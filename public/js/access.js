@@ -6,6 +6,8 @@
     $('#quote').text(response.contents.quotes[0].quote);
   });
 
+  $('#accessType').text(localStorage.access.toUpperCase());
+
   function login(event) {
     event.preventDefault();
     const email = $('#account_circle').val();
