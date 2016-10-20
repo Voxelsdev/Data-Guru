@@ -319,8 +319,8 @@
     for (project of projects) {
       const $container = $('<div class="grey-project-container">');
       const $name = $(`<a class="btn-large waves-effect waves-dark #8bc34a light-green projects">${project.name}</a>`);
-      const $edit = $('<a class="btn-large waves-effect waves-dark #c3814b edit-project"><i class="material-icons prefix">mode_edit</i></a>');
-      const $del = $('<a class="btn-large waves-effect waves-dark #c34b4b delete-project"><i class="material-icons prefix">report_problem</i></a>');
+      const $edit = $('<a class="btn-large waves-effect waves-dark #c3814b edit-project" title="Edit this project\'s name and description"><i class="material-icons prefix">mode_edit</i></a>');
+      const $del = $('<a class="btn-large waves-effect waves-dark #c34b4b delete-project" title="Delete this project, warning this is permanent"><i class="material-icons prefix">report_problem</i></a>');
       const $projId = $(`<div class="project-id">${project.projectId}</div>`);
 
       $container.append($projId);
