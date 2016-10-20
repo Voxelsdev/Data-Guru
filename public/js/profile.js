@@ -402,6 +402,21 @@
           makeProjectRequest();
           Materialize.toast('Project created!', 2000);
           $('#info-container').fadeIn(500);
+
+          const firstProjectOptions = {
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'GET',
+            url: 'projects'
+          };
+
+          $.ajax(firstProjectOptions)
+          .done((projects) => {
+            setProjectView(projects[0].id);
+          })
+          .fail((err) => {
+            Materialize.toast('Could not load in newest project', 2000);
+          });
         })
         .fail(($xhr) => {
           Materialize.toast($xhr.responseText, 3000);
