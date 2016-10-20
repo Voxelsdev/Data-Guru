@@ -412,7 +412,7 @@
 
           $.ajax(firstProjectOptions)
           .done((projects) => {
-            setProjectView(projects[0].id);
+            setProjectView(projects[projects.length].id);
           })
           .fail((err) => {
             Materialize.toast('Could not load in newest project', 2000);
