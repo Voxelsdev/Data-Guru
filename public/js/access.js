@@ -6,7 +6,8 @@
     $('#quote').text(response.contents.quotes[0].quote);
   });
 
-  $('.submit').on('click', () => {
+  function login(event) {
+    event.preventDefault();
     const email = $('#account_circle').val();
     const password = $('#verified_user').val();
 
@@ -47,5 +48,8 @@
     .fail(($xhr) => {
       Materialize.toast($xhr.responseText, 3000);
     });
-  });
+  }
+
+  $('#login').on('submit', login);
+  $('.submit').on('click', login);
 })();
