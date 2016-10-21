@@ -174,7 +174,7 @@
       const categories = 'categories=' + category;
       const only = 'only=' + dataType;
       const q = 'q=' + location;
-      const url = `http://api.us.socrata.com/api/catalog/v1?${categories}&${only}&${q}`;
+      const url = `https://api.us.socrata.com/api/catalog/v1?${categories}&${only}&${q}`;
       $.getJSON(url)
       .done((data) => {
         const domains = [];
