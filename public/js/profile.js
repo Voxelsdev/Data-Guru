@@ -48,7 +48,7 @@
             const $checkBox = $(`<p class="p-checkbox"><input type="checkbox" class="filled-in custom-color" id="filled-in-box${i}" checked="checked"/><label for="filled-in-box${i}"></label></p>`);
             const $email = $('<p class="d-email-me">Email me this dataset</p>');
             const $desc = $(`<p class="d-description">${projectInfo[i].datasetDescription}</p>`);
-            const $link = $(`<p class="d-link">${projectInfo[i].datasetLink}</p>`);
+            const $link = $(`<p class="d-link"><a href="${projectInfo[i].datasetLink}">${projectInfo[i].datasetLink}</a></p>`);
 
         $body.append($checkBox);
         $body.append($email);
@@ -255,7 +255,7 @@
           const $header = $(`<div class="collapsible-header d-name"><i class="material-icons">view_list</i>${elm.datasetName}</div>`);
           const $body = $('<div class="collapsible-body">');
           const $desc = $(`<p class="d-description">${elm.datasetDescription}</p>`);
-          const $link = $(`<p class="d-link">${elm.datasetLink}</p>`);
+          const $link = $(`<p class="d-link"><a class="d-link-a" href="${elm.datasetLink}">${elm.datasetLink}</a></p>`);
           const $buttRow = $('<div class="row">');
           const $addButt = $(`<button class="btn generalbutt addprobutt right">Add to Project</button>`);
           const $datasetId = $(`<div class="dataset-id">${elm.datasetKey}</div>`);
