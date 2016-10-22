@@ -346,8 +346,8 @@
           Materialize.toast('Project Changed Successfully!', 3000);
           makeProjectRequest();
           setProjectView(projId);
-          $('#project-name-above').text(name);
-          $('#project-desc-above').text(description);
+          $('#project-name-above-p').text(name);
+          $('#project-desc-above-p').text(description);
         } else {
           Materialize.toast('Oops! Something went wrong!', 3000);
         }
@@ -389,8 +389,8 @@
     $mainRow.append($form);
     $mainContainer.append($mainRow);
     $('#sub-container').append($mainContainer);
-    $('#project-name-above').text(name);
-    $('#project-desc-above').text(desc);
+    $('#project-name-above-p').text(name);
+    $('#project-desc-above-p').text(desc);
 
     $buttRow.on('click', (event) => {
       submitProjectChange(event, id);
@@ -405,6 +405,7 @@
       const name = project.name;
       const projectId = project.id;
       const projectDescription = project.description;
+
       projects.push({ name, projectId, projectDescription });
     }
 
@@ -425,15 +426,23 @@
 
       $del.on('click', (event) => {
         const id = parseInt($(event.target).siblings('.project-id').text()) || parseInt($(event.target).parent().siblings('.project-id').text());
+
         $.ajax({
           contentType: 'application/json',
           type: 'DELETE',
           url: `projects/${id}`
         })
         .done(() => {
-          Materialize.toast('Project deleted!', 2000);
-          $('#sub-container').empty();
+          const name = $(event.target).siblings('.projects').text() || $(event.target).parent().siblings('.projects').text();
+          const desc = $(event.target).siblings('.project-description').text() || $(event.target).parent().siblings('.project-description').text();
+
+          if ($('#project-name-above-p').text() === name && $('#project-desc-above-p').text() === desc) {
+            $('#project-name-above-p').empty();
+            $('#project-desc-above-p').empty();
+            $('#sub-container').empty();
+          }
           makeProjectRequest();
+          Materialize.toast('Project deleted!', 2000);
         })
         .fail((err) => {
           Materialize.toast(err, 3000);
@@ -491,7 +500,7 @@
           dataType: 'json',
           type: 'POST',
           url: 'projects'
-        }
+        };
 
         $.ajax(options)
         .done(() => {
