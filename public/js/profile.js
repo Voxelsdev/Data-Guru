@@ -17,12 +17,11 @@
   function setProjectView(projectId) {
     $('#sub-container').empty();
     const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
-
     const options = {
       contentType: 'application/json',
       type: 'GET',
       url: `projects/${projectId}`
-    }
+    };
 
     $.ajax(options)
     .done((projectInfo) => {
@@ -62,6 +61,7 @@
         if (projectInfo.length) {
           const $hiddenName = $(`<p style="display: none;" id="hiddenName">${projectInfo[0].name}</p>`);
           const $hiddenId = $(`<p style="display: none;" id="hiddenId">${projectInfo[0].projectId}</p>`);
+
           $mainUl.append($hiddenName);
           $mainUl.append($hiddenId);
         }
@@ -72,7 +72,7 @@
             contentType: 'application/json',
             type: 'DELETE',
             url: `projects/data/${id}`
-          }
+          };
 
           $.ajax(options)
           .done(() => {
@@ -98,6 +98,7 @@
   function setProjecId(){
     $('#info-container').off('click');
     const id = parseInt($('#project-id-container').text());
+
     setProjectView(id);
   }
 
@@ -175,6 +176,7 @@
       const only = 'only=' + dataType;
       const q = 'q=' + location;
       const url = `https://api.us.socrata.com/api/catalog/v1?${categories}&${only}&${q}`;
+
       $.getJSON(url)
       .done((data) => {
         const domains = [];
@@ -227,6 +229,7 @@
     const location = $('#location').val().trim();
     const domain = $('#domains option:selected').text().trim() || '';
     const tag = $('#tags option:selected').text().trim() || '';
+
     if (dataType !== 'Choose a Data Type' && category !== 'Choose a Category' && location && location !== '') {
       const body = JSON.stringify({ dataType, category, location, domain, tag });
       const options = {
@@ -242,6 +245,7 @@
         const $container = $('<div id="datadiv">')
         const $ulRow = $('<div class="row">');
         const $mainUl = $('<ul class="collapsible" data-collapsible="accordion" id="project-view">');
+
         if (datasets.length === 0) {
           return Materialize.toast('No Results!', 3000);
         }
