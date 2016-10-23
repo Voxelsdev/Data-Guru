@@ -1,12 +1,15 @@
+'use strict';
 (() => {
   function setview(view, projectId) {
     switch (view) {
       case 0:
         // view project
+
         setProjectView(projectId);
         break;
       case 1:
         // make dataset
+
         setMakeDataset();
         break;
       default:
