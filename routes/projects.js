@@ -10,7 +10,7 @@ const dataValidation = require('../validations/datasets');
 const jwt = require('jsonwebtoken');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
-function authorize (req, res, next) {
+function authorize(req, res, next) {
   jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return next(boom.create(401, 'Unauthorized'));
@@ -78,7 +78,6 @@ router.post('/projects', authorize, ev(validations.post), (req, res, next) => {
 
 router.post('/projects/:id/datasets/add', authorize, ev(dataValidation.post), (req, res, next) => {
   const { datasetName, datasetKey, domain, datasetLink, datasetDescription } = req.body;
-  const { userId } = req.token;
   const projectId = req.params.id;
 
   knex('datasets')
@@ -90,8 +89,8 @@ router.post('/projects/:id/datasets/add', authorize, ev(dataValidation.post), (r
         const datasetInfo = { datasetName, datasetKey, domain, datasetLink, datasetDescription };
 
         return knex('datasets').insert(decamelizeKeys(datasetInfo), '*').transacting(trx)
-          .then((row) => {
-            const datasetRow = camelizeKeys(row[0]);
+          .then((data) => {
+            const datasetRow = camelizeKeys(data[0]);
             const datasetProject = { projectId, datasetId: datasetRow.id };
 
             return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*').transacting(trx);
@@ -106,14 +105,12 @@ router.post('/projects/:id/datasets/add', authorize, ev(dataValidation.post), (r
       return knex('datasets_projects').insert(decamelizeKeys(datasetProject), '*');
     }
   })
-  .then((row) => {
-    res.send(camelizeKeys(row));
+  .then((stuff) => {
+    res.send(camelizeKeys(stuff));
   })
   .catch((err) => {
     next(err);
   });
-
-
 });
 
 router.patch('/projects/:id', authorize, ev(validations.patch), (req, res, next) => {
@@ -123,7 +120,7 @@ router.patch('/projects/:id', authorize, ev(validations.patch), (req, res, next)
     .first()
     .then((row) => {
       if (!row) {
-        throw boom.create(404, 'Not Found')
+        throw boom.create(404, 'Not Found');
       }
 
       const { name, description } = req.body;
@@ -173,27 +170,26 @@ router.delete('/projects/:id', authorize, ev(validations.delete), (req, res, nex
 });
 
 router.delete('/projects/data/:id', authorize, (req, res, next) => {
-  const { userId } = req.token;
-  let dataset_project;
+  let datasetProject;
 
   knex('datasets_projects')
     .where('id', req.params.id)
     .first()
     .then((row) => {
       if (!row) {
-        throw boom.create(404, 'Not Found')
+        throw boom.create(404, 'Not Found');
       }
 
-      dataset_project = camelizeKeys(row);
+      datasetProject = camelizeKeys(row);
 
       return knex('datasets_projects')
         .where('id', req.params.id)
         .del();
     })
     .then(() => {
-      delete dataset_project.id;
+      delete datasetProject.id;
 
-      res.send(dataset_project);
+      res.send(datasetProject);
     })
     .catch((err) => {
       next(err);
