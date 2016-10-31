@@ -408,7 +408,7 @@
     $('#projects').empty();
     const projects = [];
 
-    for(project of data) {
+    for(let project of data) {
       const name = project.name;
       const projectId = project.id;
       const projectDescription = project.description;
@@ -416,7 +416,7 @@
       projects.push({ name, projectId, projectDescription });
     }
 
-    for (project of projects) {
+    for (let project of projects) {
       const $container = $('<div class="grey-project-container">');
       const $name = $(`<a class="btn-large waves-effect waves-dark #8bc34a light-green projects">${project.name}</a>`);
       const $edit = $('<a class="btn-large waves-effect waves-dark #c3814b edit-project" title="Edit this project\'s name and description"><i class="material-icons prefix">mode_edit</i></a>');
